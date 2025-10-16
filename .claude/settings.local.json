@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install)",
+      "Bash(npm run dev)",
+      "Bash(curl -s \"https://dr11.webgraf.hu/web/jsonapi/node/tarsasjatek?page[limit]=1\")",
+      "Bash(curl:*)",
+      "Bash(node test-api.js)",
+      "Bash(node:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Read(//f/UZLETIBE/Tarsasjatek/WEBOLDAL/00--ujoldal/ETLAP/**)",
+      "Bash(ipconfig:*)",
+      "Bash(git init:*)",
+      "Bash(git add:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

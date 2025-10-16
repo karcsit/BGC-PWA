@@ -1,0 +1,12 @@
+name: 'Board Game Cafe Content Types'
+type: module
+description: 'Automatically creates Game Log, Player Finder, and Player Finder Application content types'
+core_version_requirement: ^10 || ^11
+package: 'Board Game Cafe'
+dependencies:
+  - drupal:node
+  - drupal:field
+  - drupal:text
+  - drupal:datetime
+  - drupal:image
+  - drupal:options

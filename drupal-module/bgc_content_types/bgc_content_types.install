@@ -1,0 +1,345 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the bgc_content_types module.
+ */
+
+use Drupal\node\Entity\NodeType;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\field\Entity\FieldConfig;
+
+/**
+ * Implements hook_install().
+ */
+function bgc_content_types_install() {
+  // Create Game Log content type
+  _bgc_create_game_log_content_type();
+
+  // Create Player Finder content type
+  _bgc_create_player_finder_content_type();
+
+  // Create Player Finder Application content type
+  _bgc_create_player_finder_application_content_type();
+
+  \Drupal::messenger()->addStatus(t('Board Game Cafe content types have been created successfully!'));
+}
+
+/**
+ * Create Game Log content type with all fields.
+ */
+function _bgc_create_game_log_content_type() {
+  // Create content type
+  $content_type = NodeType::create([
+    'type' => 'game_log',
+    'name' => 'Game Log',
+    'description' => 'Játékesemények rögzítése',
+  ]);
+  $content_type->save();
+
+  // Add fields
+  _bgc_add_entity_reference_field('game_log', 'field_game', 'Játék', 'node', ['tarsasjatek'], TRUE);
+  _bgc_add_datetime_field('game_log', 'field_date', 'Dátum és időpont', TRUE);
+  _bgc_add_integer_field('game_log', 'field_duration', 'Időtartam (perc)', TRUE, 1, 600);
+  _bgc_add_integer_field('game_log', 'field_player_count', 'Játékosok száma', TRUE, 1, 20);
+  _bgc_add_text_field('game_log', 'field_players', 'Játékosok', -1);
+  _bgc_add_text_field('game_log', 'field_winner', 'Nyertes neve', 1);
+  _bgc_add_text_long_field('game_log', 'field_scores', 'Pontszámok (JSON)');
+  _bgc_add_text_long_field('game_log', 'field_notes', 'Megjegyzések');
+  _bgc_add_image_field('game_log', 'field_photos', 'Fényképek', 5);
+  _bgc_add_list_field('game_log', 'field_location', 'Helyszín', [
+    'cafe' => 'Board Game Cafe',
+    'home' => 'Otthon',
+    'other' => 'Egyéb',
+  ]);
+  _bgc_add_integer_field('game_log', 'field_rating', 'Értékelés (1-5)', FALSE, 1, 5);
+}
+
+/**
+ * Create Player Finder content type with all fields.
+ */
+function _bgc_create_player_finder_content_type() {
+  // Create content type
+  $content_type = NodeType::create([
+    'type' => 'player_finder',
+    'name' => 'Player Finder',
+    'description' => 'Játékostárs keresési hirdetések',
+  ]);
+  $content_type->save();
+
+  // Add fields
+  _bgc_add_entity_reference_field('player_finder', 'field_game', 'Játék (opcionális)', 'node', ['tarsasjatek'], FALSE);
+  _bgc_add_entity_reference_field('player_finder', 'field_game_type', 'Játék típus', 'taxonomy_term', ['jatek_tipusok_polcrendszerben'], FALSE);
+  _bgc_add_list_field('player_finder', 'field_event_type', 'Esemény típusa', [
+    'once' => 'Egyszeri alkalom',
+    'recurring' => 'Rendszeres időpont',
+  ], TRUE);
+  _bgc_add_datetime_field('player_finder', 'field_event_date', 'Dátum és időpont', FALSE);
+  _bgc_add_text_field('player_finder', 'field_recurring_schedule', 'Rendszeres időpont', 1);
+  _bgc_add_integer_field('player_finder', 'field_current_players', 'Hányan vagytok már?', TRUE, 1);
+  _bgc_add_integer_field('player_finder', 'field_needed_players', 'Hányan szeretnétek lenni?', TRUE, 2);
+  _bgc_add_list_field('player_finder', 'field_location', 'Helyszín', [
+    'cafe' => 'Board Game Cafe',
+    'other' => 'Egyéb',
+  ], TRUE);
+  _bgc_add_text_long_field('player_finder', 'field_description', 'Leírás');
+  _bgc_add_list_field('player_finder', 'field_experience_level', 'Tapasztalati szint', [
+    'beginner' => 'Kezdő',
+    'intermediate' => 'Haladó',
+    'any' => 'Mindegy',
+  ]);
+  _bgc_add_text_field('player_finder', 'field_contact', 'Kapcsolat', 1);
+  _bgc_add_list_field('player_finder', 'field_status', 'Státusz', [
+    'active' => 'Aktív',
+    'full' => 'Betelt',
+    'expired' => 'Lejárt',
+  ], TRUE, 'active');
+}
+
+/**
+ * Create Player Finder Application content type.
+ */
+function _bgc_create_player_finder_application_content_type() {
+  // Create content type
+  $content_type = NodeType::create([
+    'type' => 'player_finder_application',
+    'name' => 'Player Finder Application',
+    'description' => 'Jelentkezések játékostárs hirdetésekre',
+  ]);
+  $content_type->save();
+
+  // Add fields
+  _bgc_add_entity_reference_field('player_finder_application', 'field_finder_post', 'Hirdetés', 'node', ['player_finder'], TRUE);
+  _bgc_add_text_long_field('player_finder_application', 'field_message', 'Üzenet');
+  _bgc_add_list_field('player_finder_application', 'field_status', 'Státusz', [
+    'pending' => 'Függőben',
+    'accepted' => 'Elfogadva',
+    'rejected' => 'Elutasítva',
+  ], TRUE, 'pending');
+}
+
+/**
+ * Helper: Add entity reference field.
+ */
+function _bgc_add_entity_reference_field($bundle, $field_name, $label, $target_type, $target_bundles, $required = FALSE) {
+  // Create field storage
+  if (!FieldStorageConfig::loadByName('node', $field_name)) {
+    FieldStorageConfig::create([
+      'field_name' => $field_name,
+      'entity_type' => 'node',
+      'type' => 'entity_reference',
+      'cardinality' => 1,
+      'settings' => [
+        'target_type' => $target_type,
+      ],
+    ])->save();
+  }
+
+  // Create field instance
+  if (!FieldConfig::loadByName('node', $bundle, $field_name)) {
+    FieldConfig::create([
+      'field_name' => $field_name,
+      'entity_type' => 'node',
+      'bundle' => $bundle,
+      'label' => $label,
+      'required' => $required,
+      'settings' => [
+        'handler' => 'default',
+        'handler_settings' => [
+          'target_bundles' => array_combine($target_bundles, $target_bundles),
+        ],
+      ],
+    ])->save();
+  }
+}
+
+/**
+ * Helper: Add datetime field.
+ */
+function _bgc_add_datetime_field($bundle, $field_name, $label, $required = FALSE) {
+  // Create field storage
+  if (!FieldStorageConfig::loadByName('node', $field_name)) {
+    FieldStorageConfig::create([
+      'field_name' => $field_name,
+      'entity_type' => 'node',
+      'type' => 'datetime',
+      'cardinality' => 1,
+      'settings' => [
+        'datetime_type' => 'datetime',
+      ],
+    ])->save();
+  }
+
+  // Create field instance
+  if (!FieldConfig::loadByName('node', $bundle, $field_name)) {
+    FieldConfig::create([
+      'field_name' => $field_name,
+      'entity_type' => 'node',
+      'bundle' => $bundle,
+      'label' => $label,
+      'required' => $required,
+    ])->save();
+  }
+}
+
+/**
+ * Helper: Add integer field.
+ */
+function _bgc_add_integer_field($bundle, $field_name, $label, $required = FALSE, $min = NULL, $max = NULL) {
+  // Create field storage
+  if (!FieldStorageConfig::loadByName('node', $field_name)) {
+    FieldStorageConfig::create([
+      'field_name' => $field_name,
+      'entity_type' => 'node',
+      'type' => 'integer',
+      'cardinality' => 1,
+    ])->save();
+  }
+
+  // Create field instance
+  if (!FieldConfig::loadByName('node', $bundle, $field_name)) {
+    $settings = [];
+    if ($min !== NULL) {
+      $settings['min'] = $min;
+    }
+    if ($max !== NULL) {
+      $settings['max'] = $max;
+    }
+
+    FieldConfig::create([
+      'field_name' => $field_name,
+      'entity_type' => 'node',
+      'bundle' => $bundle,
+      'label' => $label,
+      'required' => $required,
+      'settings' => $settings,
+    ])->save();
+  }
+}
+
+/**
+ * Helper: Add text field.
+ */
+function _bgc_add_text_field($bundle, $field_name, $label, $cardinality = 1, $required = FALSE) {
+  // Create field storage
+  if (!FieldStorageConfig::loadByName('node', $field_name)) {
+    FieldStorageConfig::create([
+      'field_name' => $field_name,
+      'entity_type' => 'node',
+      'type' => 'string',
+      'cardinality' => $cardinality,
+    ])->save();
+  }
+
+  // Create field instance
+  if (!FieldConfig::loadByName('node', $bundle, $field_name)) {
+    FieldConfig::create([
+      'field_name' => $field_name,
+      'entity_type' => 'node',
+      'bundle' => $bundle,
+      'label' => $label,
+      'required' => $required,
+    ])->save();
+  }
+}
+
+/**
+ * Helper: Add long text field.
+ */
+function _bgc_add_text_long_field($bundle, $field_name, $label, $required = FALSE) {
+  // Create field storage
+  if (!FieldStorageConfig::loadByName('node', $field_name)) {
+    FieldStorageConfig::create([
+      'field_name' => $field_name,
+      'entity_type' => 'node',
+      'type' => 'string_long',
+      'cardinality' => 1,
+    ])->save();
+  }
+
+  // Create field instance
+  if (!FieldConfig::loadByName('node', $bundle, $field_name)) {
+    FieldConfig::create([
+      'field_name' => $field_name,
+      'entity_type' => 'node',
+      'bundle' => $bundle,
+      'label' => $label,
+      'required' => $required,
+    ])->save();
+  }
+}
+
+/**
+ * Helper: Add image field.
+ */
+function _bgc_add_image_field($bundle, $field_name, $label, $cardinality = 1, $required = FALSE) {
+  // Create field storage
+  if (!FieldStorageConfig::loadByName('node', $field_name)) {
+    FieldStorageConfig::create([
+      'field_name' => $field_name,
+      'entity_type' => 'node',
+      'type' => 'image',
+      'cardinality' => $cardinality,
+    ])->save();
+  }
+
+  // Create field instance
+  if (!FieldConfig::loadByName('node', $bundle, $field_name)) {
+    FieldConfig::create([
+      'field_name' => $field_name,
+      'entity_type' => 'node',
+      'bundle' => $bundle,
+      'label' => $label,
+      'required' => $required,
+    ])->save();
+  }
+}
+
+/**
+ * Helper: Add list field.
+ */
+function _bgc_add_list_field($bundle, $field_name, $label, $allowed_values, $required = FALSE, $default_value = NULL) {
+  // Create field storage
+  if (!FieldStorageConfig::loadByName('node', $field_name)) {
+    FieldStorageConfig::create([
+      'field_name' => $field_name,
+      'entity_type' => 'node',
+      'type' => 'list_string',
+      'cardinality' => 1,
+      'settings' => [
+        'allowed_values' => $allowed_values,
+      ],
+    ])->save();
+  }
+
+  // Create field instance
+  if (!FieldConfig::loadByName('node', $bundle, $field_name)) {
+    $config = [
+      'field_name' => $field_name,
+      'entity_type' => 'node',
+      'bundle' => $bundle,
+      'label' => $label,
+      'required' => $required,
+    ];
+
+    if ($default_value !== NULL) {
+      $config['default_value'] = [['value' => $default_value]];
+    }
+
+    FieldConfig::create($config)->save();
+  }
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function bgc_content_types_uninstall() {
+  // Optionally delete content types on uninstall
+  // $content_types = ['game_log', 'player_finder', 'player_finder_application'];
+  // foreach ($content_types as $type) {
+  //   $content_type = NodeType::load($type);
+  //   if ($content_type) {
+  //     $content_type->delete();
+  //   }
+  // }
+}

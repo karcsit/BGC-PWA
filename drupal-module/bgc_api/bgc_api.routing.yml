@@ -1,0 +1,31 @@
+bgc_api.register:
+  path: '/api/register'
+  defaults:
+    _controller: '\Drupal\bgc_api\Controller\RegistrationController::register'
+  methods: [POST, OPTIONS]
+  requirements:
+    _access: 'TRUE'
+
+bgc_api.login:
+  path: '/api/login'
+  defaults:
+    _controller: '\Drupal\bgc_api\Controller\AuthController::login'
+  methods: [POST, OPTIONS]
+  requirements:
+    _access: 'TRUE'
+
+bgc_api.logout:
+  path: '/api/logout'
+  defaults:
+    _controller: '\Drupal\bgc_api\Controller\AuthController::logout'
+  methods: [POST, OPTIONS]
+  requirements:
+    _user_is_logged_in: 'TRUE'
+
+bgc_api.current_user:
+  path: '/api/current-user'
+  defaults:
+    _controller: '\Drupal\bgc_api\Controller\AuthController::currentUser'
+  methods: [GET, OPTIONS]
+  requirements:
+    _access: 'TRUE'

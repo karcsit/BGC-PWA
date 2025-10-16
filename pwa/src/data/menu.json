@@ -1,0 +1,1731 @@
+{
+  "Szendvicsek, Rágcsálnivalók\nkeyboard_arrow_down": [
+    {
+      "name": "Csirkés baconos gouda sajtos panini",
+      "price": "2100 Ft",
+      "allergens": [
+        "barley",
+        "wheatflour",
+        "gluten",
+        "mustard",
+        "cheese",
+        "sesame",
+        "milk"
+      ]
+    },
+    {
+      "name": "Marhahúsos cheddar sajtos panini",
+      "price": "2100 Ft",
+      "allergens": [
+        "barley",
+        "wheatflour",
+        "gluten",
+        "sulphites",
+        "cashewnut",
+        "almond",
+        "mustard",
+        "cheese",
+        "sesame",
+        "milk",
+        "celery"
+      ]
+    },
+    {
+      "name": "Prágai sonkás emmentális panini",
+      "price": "2100 Ft",
+      "allergens": [
+        "barley",
+        "wheatflour",
+        "gluten",
+        "cashewnut",
+        "almond",
+        "cheese",
+        "sesame",
+        "milk"
+      ]
+    },
+    {
+      "name": "GM Sonkás Lepény",
+      "price": "3800 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Sonkás-Sajtos Lepény",
+      "price": "2550 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Kéksajtos sült hagymás panini",
+      "price": "2100 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Chilis marharagus Lepény",
+      "price": "2550 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Görög csirkés lepény",
+      "price": "2550 Ft",
+      "allergens": [
+        "gluten",
+        "mustard",
+        "milk"
+      ]
+    },
+    {
+      "name": "Kolbászos lepény",
+      "price": "2550 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Mézes-mustáros csirkés lepény",
+      "price": "2550 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Parajos-fetás lepény",
+      "price": "2550 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Paradicsomos-mozzarellás lepény",
+      "price": "2550 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Ropi",
+      "price": "810 Ft",
+      "allergens": [
+        "wheatflour",
+        "gluten",
+        "milk"
+      ]
+    },
+    {
+      "name": "Gumicukor (100 g)",
+      "price": "690 Ft",
+      "allergens": [
+        "gluten",
+        "milk",
+        "lactose"
+      ]
+    },
+    {
+      "name": "Sós mogyoró 100g",
+      "price": "810 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Csipsz Parajdi sós",
+      "price": "990 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Csipsz Szarvasgombás",
+      "price": "990 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Popcorn Parajdi sós",
+      "price": "990 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Nachos sajtszósszal",
+      "price": "1400 Ft",
+      "allergens": [
+        "gluten",
+        "cheese",
+        "milk",
+        "celery"
+      ]
+    },
+    {
+      "name": "Nachos salsa szósszal",
+      "price": "1400 Ft",
+      "allergens": [
+        "gluten",
+        "soya",
+        "milk"
+      ]
+    },
+    {
+      "name": "Sajtszósz pluszban",
+      "price": "330 Ft",
+      "allergens": [
+        "cheese",
+        "milk",
+        "celery"
+      ]
+    },
+    {
+      "name": "Salsa szósz pluszban",
+      "price": "330 Ft",
+      "allergens": [
+        "gluten",
+        "soya",
+        "milk"
+      ]
+    },
+    {
+      "name": "Jalapeno",
+      "price": "330 Ft",
+      "allergens": []
+    }
+  ],
+  "Sörök\nkeyboard_arrow_down": [
+    {
+      "name": "0,3l Csíki csapolt világos sör",
+      "price": "1130 Ft",
+      "allergens": [
+        "gluten"
+      ]
+    },
+    {
+      "name": "0,5l Csíki csapolt világos sör",
+      "price": "1490 Ft",
+      "allergens": [
+        "gluten"
+      ]
+    },
+    {
+      "name": "0,3l Csíki csapolt vadmálna vitaminsör",
+      "price": "1260 Ft",
+      "allergens": [
+        "gluten"
+      ]
+    },
+    {
+      "name": "0,5l Csíki csapolt vadmálna vitaminsör",
+      "price": "1680 Ft",
+      "allergens": [
+        "gluten"
+      ]
+    },
+    {
+      "name": "Kozel Prémium 0,5l",
+      "price": "1250 Ft",
+      "allergens": [
+        "gluten"
+      ]
+    },
+    {
+      "name": "Staropramen Dark 0,5l",
+      "price": "1350 Ft",
+      "allergens": [
+        "gluten"
+      ]
+    },
+    {
+      "name": "Pilsner Urquell 0,5l",
+      "price": "1490 Ft",
+      "allergens": [
+        "gluten"
+      ]
+    },
+    {
+      "name": "Edelweiss 0,5l",
+      "price": "1630 Ft",
+      "allergens": [
+        "gluten"
+      ]
+    },
+    {
+      "name": "Somersby alma cider 0,33l",
+      "price": "1330 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Csíki Puskás sör",
+      "price": "1350 Ft",
+      "allergens": [
+        "gluten"
+      ]
+    },
+    {
+      "name": "Csíki Gyömbér Chili sör 0,5l",
+      "price": "1500 Ft",
+      "allergens": [
+        "gluten"
+      ]
+    },
+    {
+      "name": "Szent András Málnás búza",
+      "price": "1790 Ft",
+      "allergens": [
+        "gluten"
+      ]
+    },
+    {
+      "name": "Szent András Almás rétes",
+      "price": "1790 Ft",
+      "allergens": [
+        "gluten"
+      ]
+    },
+    {
+      "name": "Szent András Hegemón",
+      "price": "1790 Ft",
+      "allergens": [
+        "gluten"
+      ]
+    },
+    {
+      "name": "Szent András Laza Morál",
+      "price": "1790 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Szent András Meggyes",
+      "price": "1790 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Fantás sör (0,5 l)",
+      "price": "1500 Ft",
+      "allergens": [
+        "barley",
+        "gluten",
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Gyömbéres sör (0,5 l)",
+      "price": "1500 Ft",
+      "allergens": [
+        "barley",
+        "gluten",
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Sprite-os sör (0,5 l)",
+      "price": "1500 Ft",
+      "allergens": [
+        "barley",
+        "gluten",
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Stari 0.0 alkoholmentes sör 0,33 l",
+      "price": "1420 Ft",
+      "allergens": [
+        "barley",
+        "gluten"
+      ]
+    },
+    {
+      "name": "Gösser citrom 0,33 l",
+      "price": "1000 Ft",
+      "allergens": [
+        "barley",
+        "gluten"
+      ]
+    },
+    {
+      "name": "Szent András Majdnem mangós IPA 0%",
+      "price": "1420 Ft",
+      "allergens": []
+    }
+  ],
+  "Borok\nkeyboard_arrow_down": [
+    {
+      "name": "Gere Tamás Villányi Olaszrizling 1dl",
+      "price": "840 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Gere Tamás Villányi Olaszrizling 2dl",
+      "price": "1680 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Gere Tamás Villányi Olaszrizling 3dl",
+      "price": "2520 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Gere Tamás Villányi Olaszrizling 1 üveg",
+      "price": "5460 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Darvin Zsófizsu Száraz Rosé 1 üveg",
+      "price": "5460 Ft",
+      "allergens": []
+    },
+    {
+      "name": "3dl Darvin Zsófizsu Száraz Rosé",
+      "price": "2520 Ft",
+      "allergens": []
+    },
+    {
+      "name": "2dl Darvin Zsófizsu Száraz Rosé",
+      "price": "1680 Ft",
+      "allergens": []
+    },
+    {
+      "name": "1dl Darvin Zsófizsu Száraz Rosé",
+      "price": "840 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Darvin Csiripelő Siller 1dl",
+      "price": "880 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Darvin Csiripelő Siller 2dl",
+      "price": "1760 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Darvin Csiripelő Siller 3dl",
+      "price": "2640 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Darvin Csiripelő Siller 1 üveg",
+      "price": "5720 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Darvin Bélagyula Merlot 1dl",
+      "price": "880 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Darvin Bélagyula Merlot 2dl",
+      "price": "1760 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Darvin Bélagyula Merlot 3dl",
+      "price": "2640 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Darvin Bélagyula Merlot 1 üveg",
+      "price": "5720 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Juhász Muscat Ottonel 1dl",
+      "price": "800 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Juhász Muscat Ottonel 2dl",
+      "price": "1600 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Juhász Muscat Ottonel 3dl",
+      "price": "2400 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Juhász Muscat Ottonel 1 üveg",
+      "price": "5200 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Darvin Zsuzsófi Félédes Rosé 1dl",
+      "price": "840 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Darvin Zsuzsófi Félédes Rosé 2dl",
+      "price": "1680 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Darvin Zsuzsófi Félédes Rosé 3dl",
+      "price": "2520 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Darvin Zsuzsófi Félédes Rosé 1 üveg",
+      "price": "5460 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    }
+  ],
+  "Fröccsök\nkeyboard_arrow_down": [
+    {
+      "name": "Macifröccs",
+      "price": "1850 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts",
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Shrek fröccs",
+      "price": "1850 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Kisfröccs Villányi Olaszrizling",
+      "price": "930 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Kisfröccs Muscat Ottonel",
+      "price": "890 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Kisfröccs Zsuzsófi félédes rosé",
+      "price": "930 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Kisfröccs Zsófizsu Száraz Rosé",
+      "price": "930 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Kisfröccs Merlot",
+      "price": "970 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Kisfröccs Csiripelő Siller",
+      "price": "970 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Nagyfröccs Villányi Olaszrizling",
+      "price": "1770 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Nagyfröccs Muscat Ottonel",
+      "price": "1690 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Nagyfröccs Zsuzsófi félédes rosé",
+      "price": "1770 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Nagyfröccs Merlot",
+      "price": "1850 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Nagyfröccs Csiripelő Siller",
+      "price": "1850 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Nagyfröccs Zsófizsu Száraz Rosé",
+      "price": "1770 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Hosszúlépés Villányi Olaszrizling",
+      "price": "1020 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Hosszúlépés Muscat Ottonel",
+      "price": "980 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Hosszúlépés Zsuzsófi félédes rosé",
+      "price": "1020 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Hosszúlépés Merlot",
+      "price": "1060 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Hosszúlépés Csiripelő Siller",
+      "price": "1060 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Hosszúlépés Zsófizsu Száraz Rosé",
+      "price": "1020 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Sportfröccs Villányi Olaszrizling",
+      "price": "1200 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Sportfröccs Muscat Ottonel",
+      "price": "1160 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Sportfröccs Zsuzsófi félédes rosé",
+      "price": "1200 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Sportfröccs Csiripelő Siller",
+      "price": "1240 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Sportfröccs Merlot",
+      "price": "1240 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Sportfröccs Zsófizsu Száraz Rosé",
+      "price": "1200 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Házmester Villányi Olaszrizling",
+      "price": "2700 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Házmester Muscat Ottonel",
+      "price": "2580 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Házmester Zsuzsófi félédes rosé",
+      "price": "2700 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Házmester Merlot",
+      "price": "2820 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Házmester Csiripelő Siller",
+      "price": "2820 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Házmester Zsófizsu Száraz Rosé",
+      "price": "2700 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Viceházmester Villányi Olaszrizling",
+      "price": "1950 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Viceházmester Muscat Ottonel",
+      "price": "1870 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Viceházmester Zsuzsófi félédes rosé",
+      "price": "1950 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Viceházmester Csiripelő Siller",
+      "price": "2030 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Viceházmester Merlot",
+      "price": "2030 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Viceházmester Zsófizsu Száraz Rosé",
+      "price": "1950 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Háziúr Villányi Olaszrizling",
+      "price": "3450 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Háziúr Muscat Ottonel",
+      "price": "3290 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Háziúr Zsuzsófi félédes rosé",
+      "price": "3450 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Háziúr Merlot",
+      "price": "3610 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Háziúr Csiripelő Siller",
+      "price": "3610 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Háziúr Zsófizsu Száraz Rosé",
+      "price": "3450 Ft",
+      "allergens": []
+    }
+  ],
+  "Limonádék\nkeyboard_arrow_down": [
+    {
+      "name": "Natúr citromos limonádé 0,3l",
+      "price": "1250 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Bodzás limonádé 0,3l",
+      "price": "1250 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Csilis-málnás limonádé 0,3l",
+      "price": "1250 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Epres limonádé 0,3l",
+      "price": "1250 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Fahéjas szilvás limonádé 0,3l",
+      "price": "1250 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Gyömbér limonádé 0,3l",
+      "price": "1250 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Levendulás limonádé 0,3l",
+      "price": "1250 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Málnás limonádé 0,3l",
+      "price": "1250 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Mangós limonádé 0,3l",
+      "price": "1250 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Maracujás limonádé 0,3l",
+      "price": "1250 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Meggyes limonádé 0,3l (erytviával)",
+      "price": "1250 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Zöldalmás limonádé 0,3l",
+      "price": "1250 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Natúr citromos limonádé 0,5l",
+      "price": "1550 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Bodzás limonádé 0,5l",
+      "price": "1550 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Csilis-málnás limonádé 0,5l",
+      "price": "1550 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Epres limonádé 0,5l",
+      "price": "1550 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Fahéjas szilvás limonádé 0,5l",
+      "price": "1550 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Gyömbér limonádé 0,5l",
+      "price": "1550 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Levendulás limonádé 0,5l",
+      "price": "1550 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Málnás limonádé 0,5l",
+      "price": "1550 Ft",
+      "allergens": [
+        "walnut",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Mangós limonádé 0,5l",
+      "price": "1550 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Maracujás limonádé 0,5l",
+      "price": "1550 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Meggyes limonádé 0,5l (erytviával)",
+      "price": "1550 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Zöldalmás limonádé 0,5l",
+      "price": "1550 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Limonádé kancsó natúr citromos",
+      "price": "4300 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Limonádé kancsó bodza",
+      "price": "4300 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Limonádé kancsó csilis-málna",
+      "price": "4300 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Limonádé kancsó eper",
+      "price": "4300 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Limonádé kancsó fahéjas szilva",
+      "price": "4300 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Limonádé kancsó gyömbér",
+      "price": "4300 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Limonádé kancsó levendula",
+      "price": "4300 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Limonádé kancsó málna",
+      "price": "4300 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Limonádé kancsó mangó",
+      "price": "4300 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Limonádé kancsó maracuja",
+      "price": "4300 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Limonádé kancsó meggy cukormentes",
+      "price": "4300 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Limonádé kancsó zöldalma",
+      "price": "4300 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Fahéjas szilvás limonádé szilva pálinkával",
+      "price": "3300 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Zöldalmás limonádé almapálinkával",
+      "price": "3300 Ft",
+      "allergens": []
+    }
+  ],
+  "Szörpök\nkeyboard_arrow_down": [
+    {
+      "name": "Bodza szörp 0,3l",
+      "price": "990 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Chilis-málna szörp 0,3l",
+      "price": "990 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Eper szörp 0,3l",
+      "price": "990 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Fahéjas szilva szörp 0,3l",
+      "price": "990 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Gyömbér szörp 0,3l",
+      "price": "990 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Levendula szörp 0,3l",
+      "price": "990 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Málna szörp 0,3l",
+      "price": "990 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Mangó szörp 0,3l",
+      "price": "990 Ft",
+      "allergens": [
+        "walnut",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Meggy szörp 0,3l cukormentes",
+      "price": "990 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Bodza szörp 0,5l",
+      "price": "1250 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Chilis-málna szörp 0,5l",
+      "price": "1250 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Eper szörp 0,5l",
+      "price": "1250 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Fahéjas szilva szörp 0,5l",
+      "price": "1250 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Gyömbér szörp 0,5l",
+      "price": "1250 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Levendula szörp 0,5l",
+      "price": "1250 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Málna szörp 0,5l",
+      "price": "1250 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Mangó szörp 0,5l",
+      "price": "1250 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Meggy szörp 0,5l cukormentes",
+      "price": "1250 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Kancsó Bodza Szörp",
+      "price": "3450 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Kancsó Chilis-málna szörp",
+      "price": "3450 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Kancsó Eper Szörp",
+      "price": "3450 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Kancsó Fahéjas szilva szörp",
+      "price": "3450 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Kancsó Gyömbér szörp",
+      "price": "3450 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Kancsó Levendula szörp",
+      "price": "3450 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Kancsó Málna szörp",
+      "price": "3450 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Kancsó Mangó szörp",
+      "price": "3450 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Kancsó Meggy szörp",
+      "price": "3450 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    }
+  ],
+  "Üdítők\nkeyboard_arrow_down": [
+    {
+      "name": "Coca-Cola 0,25l",
+      "price": "760 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Coca-Cola Zero 0,25l",
+      "price": "760 Ft",
+      "allergens": [
+        "phenylalanine",
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Fanta narancs 0,25l",
+      "price": "760 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Sprite Zero 0,25l",
+      "price": "760 Ft",
+      "allergens": [
+        "phenylalanine"
+      ]
+    },
+    {
+      "name": "Kinley Tonic 0,25l",
+      "price": "760 Ft",
+      "allergens": [
+        "kinin"
+      ]
+    },
+    {
+      "name": "Kinley gyömbér 0,25l",
+      "price": "760 Ft",
+      "allergens": [
+        "phenylalanine",
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Cappy narancs 0,25l",
+      "price": "800 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Cappy alma 0,25l",
+      "price": "800 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Cappy őszibarack 0,25l",
+      "price": "800 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Cappy eper 0,25l",
+      "price": "800 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Topjoy meggy-alma 0,25l",
+      "price": "800 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Topjoy kaktusz 0,25l",
+      "price": "800 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Must 1dl",
+      "price": "580 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Almafröccs 0,5l",
+      "price": "1100 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Eperfröccs 0,5l",
+      "price": "1100 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Narancs fröccs 0,5l",
+      "price": "1100 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Meggy-alma fröccs 0,5l",
+      "price": "1100 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Őszi fröccs 0,5l",
+      "price": "1100 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Kaktusz fröccs 0,5l",
+      "price": "1100 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Must fröccs 0,5l",
+      "price": "1500 Ft",
+      "allergens": []
+    },
+    {
+      "name": "FAB",
+      "price": "1600 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Naturaqua mentes 0,33l",
+      "price": "620 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Ásványvíz mentes 1,5l",
+      "price": "990 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Naturaqua szénsavas 0,33l",
+      "price": "620 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Ásványvíz szénsavas 1,5l",
+      "price": "990 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Szóda 1dl",
+      "price": "90 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Szóda üveg 1,7l",
+      "price": "990 Ft",
+      "allergens": []
+    }
+  ],
+  "Long drinkek\nkeyboard_arrow_down": [
+    {
+      "name": "Buli kancsó eper",
+      "price": "6590 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts",
+        "gluten"
+      ]
+    },
+    {
+      "name": "Buli kancsó kivi",
+      "price": "6590 Ft",
+      "allergens": [
+        "gluten"
+      ]
+    },
+    {
+      "name": "Buli kancsó málna",
+      "price": "6590 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts",
+        "gluten"
+      ]
+    },
+    {
+      "name": "Buli kancsó zöldalma",
+      "price": "6590 Ft",
+      "allergens": [
+        "gluten"
+      ]
+    },
+    {
+      "name": "Famous fizz",
+      "price": "1900 Ft",
+      "allergens": [
+        "gluten",
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Whisky Coke",
+      "price": "2600 Ft",
+      "allergens": [
+        "gluten",
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Whisky Coke Zero",
+      "price": "2600 Ft",
+      "allergens": [
+        "phenylalanine",
+        "gluten",
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Whisky gyömbér",
+      "price": "2600 Ft",
+      "allergens": [
+        "phenylalanine",
+        "gluten",
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Gin fizz",
+      "price": "1900 Ft",
+      "allergens": [
+        "nuts",
+        "gluten",
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Gin & Tonic",
+      "price": "2600 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Vodka szóda",
+      "price": "1900 Ft",
+      "allergens": [
+        "gluten"
+      ]
+    },
+    {
+      "name": "Cooler vodka-zöldalma",
+      "price": "2600 Ft",
+      "allergens": [
+        "gluten",
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Cooler vodka-eper",
+      "price": "2600 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts",
+        "gluten",
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Cooler vodka-málna",
+      "price": "2600 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts",
+        "gluten",
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Screwdriver",
+      "price": "2600 Ft",
+      "allergens": [
+        "gluten"
+      ]
+    },
+    {
+      "name": "Vodka alma",
+      "price": "2600 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Áron koktél",
+      "price": "2600 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts",
+        "gluten"
+      ]
+    },
+    {
+      "name": "Speed cooler",
+      "price": "4650 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts",
+        "gluten"
+      ]
+    },
+    {
+      "name": "Cuba Libre",
+      "price": "2600 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Cuba Libre Zero",
+      "price": "2600 Ft",
+      "allergens": [
+        "phenylalanine"
+      ]
+    },
+    {
+      "name": "Mojito",
+      "price": "2600 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Green mojito",
+      "price": "2600 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Adult Temple",
+      "price": "2600 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Aperol szóda",
+      "price": "1900 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Aperol spricc",
+      "price": "2600 Ft",
+      "allergens": [
+        "sulphites"
+      ]
+    },
+    {
+      "name": "Slammer - Tequila gyömbér",
+      "price": "2600 Ft",
+      "allergens": [
+        "phenylalanine"
+      ]
+    },
+    {
+      "name": "BGC koktél",
+      "price": "2930 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Tequila Sunrise",
+      "price": "2930 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Bariton",
+      "price": "2600 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Baricola",
+      "price": "2600 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Black Cow",
+      "price": "1670 Ft",
+      "allergens": [
+        "walnut",
+        "peanuts",
+        "gluten",
+        "soya",
+        "milk",
+        "wheyconcentrate",
+        "cream",
+        "egg"
+      ]
+    },
+    {
+      "name": "Black Cow Zero",
+      "price": "1670 Ft",
+      "allergens": [
+        "walnut",
+        "phenylalanine",
+        "peanuts",
+        "gluten",
+        "soya",
+        "milk",
+        "wheyconcentrate",
+        "cream",
+        "egg"
+      ]
+    },
+    {
+      "name": "Dolce & Gabbana",
+      "price": "1670 Ft",
+      "allergens": [
+        "nuts",
+        "phenylalanine",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Moskito",
+      "price": "1670 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Shirley Temple",
+      "price": "1670 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Virgin Mojito",
+      "price": "1670 Ft",
+      "allergens": []
+    },
+    {
+      "name": "Virgin Sunrise",
+      "price": "1670 Ft",
+      "allergens": [
+        "nuts",
+        "peanuts"
+      ]
+    },
+    {
+      "name": "Virgin BGC koktél",
+      "price": "1670 Ft",
+      "allergens": []
+    }
+  ]
+}
