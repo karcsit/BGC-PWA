@@ -3,7 +3,9 @@
  * Handles login, registration, logout, and session management
  */
 
-const API_BASE = '' // Using Vite proxy, no need for full URL
+// In production, use absolute path to bypass /web/pwa/ base
+// In dev, use empty string for Vite proxy
+const API_BASE = import.meta.env.DEV ? '' : '/web'
 
 export const authService = {
   /**

@@ -20,7 +20,11 @@
       "Bash(npm install:*)",
       "Bash(npm run build:*)",
       "Bash(powershell Compress-Archive -Path dist* -DestinationPath ../pwa-deploy.zip -Force)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(powershell \"Compress-Archive -Path ''pwa/dist/*'' -DestinationPath ''pwa-deploy-fixed.zip'' -Force\")",
+      "Bash(cat:*)",
+      "Bash(tar:*)",
+      "Bash(powershell \"Compress-Archive -Path ''pwa/dist/*'' -DestinationPath ''pwa2-deploy.zip'' -Force\")"
     ],
     "deny": [],
     "ask": []

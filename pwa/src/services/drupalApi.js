@@ -2,7 +2,7 @@
 // Fejlesztésben a Vite proxy-t használjuk (relatív URL), production-ben az abszolút URL-t
 const API_BASE_URL = import.meta.env.DEV
   ? '' // Relatív URL fejlesztésben (Vite proxy-n keresztül)
-  : 'https://dr11.webgraf.hu/web'; // Abszolút URL production-ben
+  : '/web'; // Abszolút path production-ben (same domain)
 
 /**
  * Fetch all games from Drupal
