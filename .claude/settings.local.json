@@ -12,7 +12,15 @@
       "Read(//f/UZLETIBE/Tarsasjatek/WEBOLDAL/00--ujoldal/ETLAP/**)",
       "Bash(ipconfig:*)",
       "Bash(git init:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nInitial commit: Board Game Cafe PWA\n\nImplemented features:\n- React 18 PWA with Vite\n- Drupal 11 JSON:API integration\n- Authentication system (login, profile)\n- Game list with filtering and search\n- Menu navigation by categories\n- Game Log functionality\n  - Create game log entries\n  - View all and own logs\n  - Player tracking, scores, winner\n  - Location, duration, rating, notes\n  - Basic statistics\n- Custom Drupal module for content types\n\nTech stack:\n- React 18, React Router v6, Tailwind CSS\n- Drupal 11 backend with JSON:API\n- Vite dev server with proxy configuration\n\n🤖 Generated with Claude Code\nEOF\n)\")",
+      "Bash(git remote add:*)",
+      "Bash(git branch:*)",
+      "Bash(git push:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run build:*)",
+      "Bash(powershell Compress-Archive -Path dist* -DestinationPath ../pwa-deploy.zip -Force)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []
