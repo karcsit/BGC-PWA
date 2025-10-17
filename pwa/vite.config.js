@@ -5,6 +5,15 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   base: '/web/pwa2/', // Production base URL (includes /web/ subdirectory)
+  build: {
+    rollupOptions: {
+      output: {
+        entryFileNames: `assets/[name]-[hash]-v2.js`,
+        chunkFileNames: `assets/[name]-[hash]-v2.js`,
+        assetFileNames: `assets/[name]-[hash].[ext]`
+      }
+    }
+  },
   server: {
     host: '0.0.0.0', // Enable network access
     port: 5173,
