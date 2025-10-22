@@ -24,7 +24,11 @@
       "Bash(powershell \"Compress-Archive -Path ''pwa/dist/*'' -DestinationPath ''pwa-deploy-fixed.zip'' -Force\")",
       "Bash(cat:*)",
       "Bash(tar:*)",
-      "Bash(powershell \"Compress-Archive -Path ''pwa/dist/*'' -DestinationPath ''pwa2-deploy.zip'' -Force\")"
+      "Bash(powershell \"Compress-Archive -Path ''pwa/dist/*'' -DestinationPath ''pwa2-deploy.zip'' -Force\")",
+      "Bash(powershell \"Compress-Archive -Path ''pwa/dist/*'' -DestinationPath ''jatsszokosan-pwa-deploy.zip'' -Force\")",
+      "Bash(unzip:*)",
+      "Bash(powershell \"Compress-Archive -Path ''pwa/dist/*'' -DestinationPath ''jatsszokosan-pwa-LATEST.zip'' -Force\")",
+      "Bash(powershell \"Compress-Archive -Path ''pwa/dist/*'' -DestinationPath ''jatsszokosan-pwa-with-htaccess.zip'' -Force\")"
     ],
     "deny": [],
     "ask": []

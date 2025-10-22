@@ -2,7 +2,7 @@
 // Fejlesztésben a Vite proxy-t használjuk (relatív URL), production-ben az abszolút URL-t
 const API_BASE_URL = import.meta.env.DEV
   ? '' // Relatív URL fejlesztésben (Vite proxy-n keresztül)
-  : '/web'; // Abszolút path production-ben (same domain)
+  : ''; // Production: same domain, NO /web/ prefix (jatsszokosan.hu)
 
 /**
  * Fetch all games from Drupal

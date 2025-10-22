@@ -31,7 +31,8 @@ const GameCard = forwardRef(({ game, included = [] }, ref) => {
 
     if (fileEntity?.attributes?.uri?.url) {
       const url = fileEntity.attributes.uri.url
-      return `https://dr11.webgraf.hu${url}`
+      // URL already starts with / so just prepend domain
+      return `https://jatsszokosan.hu${url}`
     }
 
     return null

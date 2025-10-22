@@ -5,9 +5,8 @@
 
 import { authService } from './authService'
 
-// In production, use absolute path to bypass /web/pwa/ base
-// In dev, use empty string for Vite proxy
-const API_BASE = import.meta.env.DEV ? '' : '/web'
+// Same domain in both dev and production, no /web/ prefix
+const API_BASE = '' // Works for both dev and production on jatsszokosan.hu
 
 export const gameLogService = {
   /**

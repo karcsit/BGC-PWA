@@ -4,12 +4,12 @@ import react from '@vitejs/plugin-react'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/web/pwa2/', // Production base URL (includes /web/ subdirectory)
+  base: '/pwa/', // Production base URL for jatsszokosan.hu (NO /web/ prefix!)
   build: {
     rollupOptions: {
       output: {
-        entryFileNames: `assets/[name]-[hash]-v2.js`,
-        chunkFileNames: `assets/[name]-[hash]-v2.js`,
+        entryFileNames: `assets/[name]-[hash]-v3.js`,
+        chunkFileNames: `assets/[name]-[hash]-v3.js`,
         assetFileNames: `assets/[name]-[hash].[ext]`
       }
     }
@@ -19,7 +19,7 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/jsonapi': {
-        target: 'https://dr11.webgraf.hu/web',
+        target: 'https://jatsszokosan.hu',
         changeOrigin: true,
         secure: false,
         cookieDomainRewrite: 'localhost',
@@ -27,7 +27,7 @@ export default defineConfig({
         rewrite: (path) => path
       },
       '/api': {
-        target: 'https://dr11.webgraf.hu/web',
+        target: 'https://jatsszokosan.hu',
         changeOrigin: true,
         secure: false,
         cookieDomainRewrite: 'localhost',
@@ -35,7 +35,7 @@ export default defineConfig({
         rewrite: (path) => path
       },
       '/user': {
-        target: 'https://dr11.webgraf.hu/web',
+        target: 'https://jatsszokosan.hu',
         changeOrigin: true,
         secure: false,
         cookieDomainRewrite: 'localhost',
