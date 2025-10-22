@@ -1,13 +1,18 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import { AuthProvider, useAuth } from './context/AuthContext'
+import HomePage from './pages/HomePage'
 import GameList from './components/GameList'
 import Menu from './pages/Menu'
+import EventsPage from './pages/EventsPage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import ProfilePage from './pages/ProfilePage'
 import GameLogPage from './pages/GameLogPage'
 import GameLogFormPage from './pages/GameLogFormPage'
+import PlayerFinderPage from './pages/PlayerFinderPage'
+import PlayerFinderFormPage from './pages/PlayerFinderFormPage'
+import PlayerFinderDetailPage from './pages/PlayerFinderDetailPage'
 import ProtectedRoute from './components/ProtectedRoute'
 
 function AppContent() {
@@ -16,10 +21,10 @@ function AppContent() {
   return (
     <div className="min-h-screen bg-gray-50">
         {/* Header */}
-        <header className="bg-gradient-to-r from-primary-purple to-primary-indigo text-white shadow-lg">
+        <header className="bg-gradient-to-r from-primary to-secondary text-white shadow-lg">
           <div className="container mx-auto px-4 py-6">
             <h1 className="text-3xl font-bold">Board Game Cafe</h1>
-            <p className="text-purple-100">Üllői út 46, Budapest 1084</p>
+            <p className="text-white/90">Üllői út 46, Budapest 1084</p>
           </div>
         </header>
 
@@ -27,40 +32,18 @@ function AppContent() {
         <nav className="bg-white shadow-md sticky top-0 z-50">
           <div className="container mx-auto px-4">
             <div className="flex justify-between items-center py-4">
-              <ul className="flex space-x-6">
-                <li>
-                  <Link to="/" className="text-gray-700 hover:text-primary-purple transition-colors font-medium">
-                    🎲 Játékok
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/game-log" className="text-gray-700 hover:text-primary-purple transition-colors font-medium">
-                    📖 Játéknapló
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/menu" className="text-gray-700 hover:text-primary-purple transition-colors font-medium">
-                    🍽️ Menü
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/booking" className="text-gray-700 hover:text-primary-purple transition-colors font-medium">
-                    📅 Foglalás
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/events" className="text-gray-700 hover:text-primary-purple transition-colors font-medium">
-                    🎉 Események
-                  </Link>
-                </li>
-              </ul>
+              <div>
+                <Link to="/" className="text-gray-700 hover:text-primary transition-colors font-medium">
+                  🏠 Főoldal
+                </Link>
+              </div>
 
               {/* Auth Buttons */}
               <div className="flex items-center gap-3">
                 {user ? (
                   <Link
                     to="/profile"
-                    className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary-purple to-primary-indigo text-white rounded-lg hover:shadow-lg transition-all duration-300"
+                    className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary to-secondary text-white rounded-lg hover:shadow-lg transition-all duration-300"
                   >
                     <span className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center font-bold">
                       {user.name.charAt(0).toUpperCase()}
@@ -71,13 +54,13 @@ function AppContent() {
                   <>
                     <Link
                       to="/login"
-                      className="px-4 py-2 text-primary-purple font-medium hover:text-primary-indigo transition-colors"
+                      className="px-4 py-2 text-primary font-medium hover:text-secondary transition-colors"
                     >
                       Bejelentkezés
                     </Link>
                     <Link
                       to="/register"
-                      className="px-4 py-2 bg-gradient-to-r from-primary-purple to-primary-indigo text-white rounded-lg hover:shadow-lg transition-all duration-300 font-medium"
+                      className="px-4 py-2 bg-gradient-to-r from-primary to-secondary text-white rounded-lg hover:shadow-lg transition-all duration-300 font-medium"
                     >
                       Regisztráció
                     </Link>
@@ -91,7 +74,8 @@ function AppContent() {
         {/* Main Content */}
         <main className="container mx-auto px-4 py-8">
           <Routes>
-            <Route path="/" element={<GameList />} />
+            <Route path="/" element={<HomePage />} />
+            <Route path="/games" element={<GameList />} />
             <Route path="/menu" element={<Menu />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
@@ -120,7 +104,18 @@ function AppContent() {
               }
             />
             <Route path="/booking" element={<div className="text-center py-12"><h2 className="text-2xl font-bold text-gray-800">Asztalfoglalás - Hamarosan</h2></div>} />
-            <Route path="/events" element={<div className="text-center py-12"><h2 className="text-2xl font-bold text-gray-800">Események - Hamarosan</h2></div>} />
+            <Route path="/events" element={<EventsPage />} />
+            <Route path="/player-finder" element={<PlayerFinderPage />} />
+            <Route
+              path="/player-finder/new"
+              element={
+                <ProtectedRoute>
+                  <PlayerFinderFormPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/player-finder/:id" element={<PlayerFinderDetailPage />} />
+            <Route path="/about" element={<div className="text-center py-12"><h2 className="text-2xl font-bold text-gray-800">Rólunk - Hamarosan</h2></div>} />
           </Routes>
         </main>
 
@@ -137,7 +132,7 @@ function AppContent() {
 
 function App() {
   return (
-    <Router>
+    <Router basename="/pwa">
       <AuthProvider>
         <AppContent />
       </AuthProvider>

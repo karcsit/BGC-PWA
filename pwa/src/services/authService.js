@@ -127,3 +127,11 @@ export const authService = {
     return !!localStorage.getItem('csrf_token') && !!localStorage.getItem('user')
   }
 }
+
+/**
+ * Get CSRF token from localStorage
+ * @returns {string|null} CSRF token or null
+ */
+export function getCsrfToken() {
+  return localStorage.getItem('csrf_token')
+}
