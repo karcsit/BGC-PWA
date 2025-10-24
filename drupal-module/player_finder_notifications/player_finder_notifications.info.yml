@@ -1,0 +1,12 @@
+name: 'Player Finder Notifications'
+type: module
+description: 'Email notifications and reminders for Player Finder posts'
+core_version_requirement: ^10 || ^11
+package: 'Board Game Cafe'
+
+dependencies:
+  - drupal:node
+  - drupal:user
+  - drupal:field
+
+configure: player_finder_notifications.settings

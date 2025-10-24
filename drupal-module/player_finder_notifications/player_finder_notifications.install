@@ -1,0 +1,169 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the Player Finder Notifications module.
+ */
+
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\field\Entity\FieldConfig;
+
+/**
+ * Implements hook_install().
+ *
+ * Creates the necessary fields when the module is installed.
+ */
+function player_finder_notifications_install() {
+  // Add field_reminder_sent to player_finder content type
+  _player_finder_notifications_create_reminder_sent_field();
+
+  // Add notification settings fields to user entity
+  _player_finder_notifications_create_user_notification_fields();
+
+  \Drupal::messenger()->addStatus(t('Player Finder Notifications module installed successfully. New fields have been added.'));
+}
+
+/**
+ * Implements hook_uninstall().
+ *
+ * Cleanup when module is uninstalled.
+ */
+function player_finder_notifications_uninstall() {
+  // Fields will be automatically removed when the module is uninstalled
+  // No additional cleanup needed
+
+  \Drupal::messenger()->addStatus(t('Player Finder Notifications module uninstalled successfully.'));
+}
+
+/**
+ * Helper function to create the field_reminder_sent field on player_finder nodes.
+ */
+function _player_finder_notifications_create_reminder_sent_field() {
+  // Check if field storage already exists
+  $field_storage = FieldStorageConfig::loadByName('node', 'field_reminder_sent');
+
+  if (!$field_storage) {
+    $field_storage = FieldStorageConfig::create([
+      'field_name' => 'field_reminder_sent',
+      'entity_type' => 'node',
+      'type' => 'boolean',
+      'cardinality' => 1,
+      'settings' => [],
+    ]);
+    $field_storage->save();
+  }
+
+  // Check if field instance already exists on player_finder
+  $field = FieldConfig::loadByName('node', 'player_finder', 'field_reminder_sent');
+
+  if (!$field) {
+    $field = FieldConfig::create([
+      'field_storage' => $field_storage,
+      'bundle' => 'player_finder',
+      'label' => t('Reminder Email Sent'),
+      'description' => t('Has the 24-hour reminder email been sent for this event?'),
+      'required' => FALSE,
+      'default_value' => [
+        ['value' => 0],
+      ],
+      'settings' => [
+        'on_label' => t('Sent'),
+        'off_label' => t('Not sent'),
+      ],
+    ]);
+    $field->save();
+
+    // Hide the field from the form display (it's programmatically managed)
+    $form_display = \Drupal::entityTypeManager()
+      ->getStorage('entity_form_display')
+      ->load('node.player_finder.default');
+
+    if ($form_display) {
+      $form_display->removeComponent('field_reminder_sent');
+      $form_display->save();
+    }
+
+    // Hide from view display (not needed for users)
+    $view_display = \Drupal::entityTypeManager()
+      ->getStorage('entity_view_display')
+      ->load('node.player_finder.default');
+
+    if ($view_display) {
+      $view_display->removeComponent('field_reminder_sent');
+      $view_display->save();
+    }
+  }
+}
+
+/**
+ * Helper function to create notification settings fields on user entity.
+ */
+function _player_finder_notifications_create_user_notification_fields() {
+  $fields = [
+    'field_notify_new_posts' => [
+      'label' => t('Notify about new Player Finder posts'),
+      'description' => t('Receive email when new Player Finder posts are published'),
+    ],
+    'field_notify_my_events' => [
+      'label' => t('Notify about my events'),
+      'description' => t('Receive reminders about events I created or joined'),
+    ],
+    'field_notify_applications' => [
+      'label' => t('Notify about applications'),
+      'description' => t('Receive email when someone applies to my event'),
+    ],
+  ];
+
+  foreach ($fields as $field_name => $field_info) {
+    // Check if field storage already exists
+    $field_storage = FieldStorageConfig::loadByName('user', $field_name);
+
+    if (!$field_storage) {
+      $field_storage = FieldStorageConfig::create([
+        'field_name' => $field_name,
+        'entity_type' => 'user',
+        'type' => 'boolean',
+        'cardinality' => 1,
+        'settings' => [],
+      ]);
+      $field_storage->save();
+    }
+
+    // Check if field instance already exists
+    $field = FieldConfig::loadByName('user', 'user', $field_name);
+
+    if (!$field) {
+      $field = FieldConfig::create([
+        'field_storage' => $field_storage,
+        'bundle' => 'user',
+        'label' => $field_info['label'],
+        'description' => $field_info['description'],
+        'required' => FALSE,
+        'default_value' => [
+          ['value' => 1], // Enabled by default
+        ],
+        'settings' => [
+          'on_label' => t('Enabled'),
+          'off_label' => t('Disabled'),
+        ],
+      ]);
+      $field->save();
+
+      // Add to form display
+      $form_display = \Drupal::entityTypeManager()
+        ->getStorage('entity_form_display')
+        ->load('user.user.default');
+
+      if ($form_display) {
+        $form_display->setComponent($field_name, [
+          'type' => 'boolean_checkbox',
+          'weight' => 50,
+          'settings' => [
+            'display_label' => TRUE,
+          ],
+        ]);
+        $form_display->save();
+      }
+    }
+  }
+}

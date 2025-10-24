@@ -1,0 +1,17 @@
+services:
+  player_finder_notifications.email_service:
+    class: Drupal\player_finder_notifications\Service\EmailService
+    arguments:
+      - '@entity_type.manager'
+      - '@plugin.manager.mail'
+      - '@config.factory'
+      - '@logger.factory'
+      - '@current_user'
+
+  player_finder_notifications.reminder_service:
+    class: Drupal\player_finder_notifications\Service\ReminderService
+    arguments:
+      - '@entity_type.manager'
+      - '@player_finder_notifications.email_service'
+      - '@logger.factory'
+      - '@datetime.time'

@@ -1,0 +1,7 @@
+player_finder_notifications.settings:
+  path: '/admin/config/player-finder/notifications'
+  defaults:
+    _form: '\Drupal\player_finder_notifications\Form\NotificationSettingsForm'
+    _title: 'Player Finder Notification Settings'
+  requirements:
+    _permission: 'administer site configuration'

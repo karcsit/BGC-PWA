@@ -1,0 +1,395 @@
+<?php
+
+/**
+ * @file
+ * Player Finder Notifications module.
+ *
+ * Provides email notifications and automated reminders for Player Finder posts.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\node\NodeInterface;
+
+/**
+ * Implements hook_cron().
+ *
+ * Runs scheduled tasks:
+ * - Send reminder emails 24 hours before events
+ * - Mark expired events as 'expired' status
+ */
+function player_finder_notifications_cron() {
+  // Get the reminder service
+  $reminder_service = \Drupal::service('player_finder_notifications.reminder_service');
+
+  // Send reminder emails for upcoming events (24h before)
+  $reminder_service->sendUpcomingEventReminders();
+
+  // Update expired event status
+  $reminder_service->updateExpiredEventStatus();
+
+  \Drupal::logger('player_finder_notifications')->info('Cron tasks completed: reminders sent and expired events updated.');
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert() for node entities.
+ *
+ * Send notification emails when a new Player Finder post is created.
+ */
+function player_finder_notifications_node_insert(EntityInterface $entity) {
+  // Only for player_finder content type
+  if ($entity->getType() !== 'player_finder') {
+    return;
+  }
+
+  // Check if the post is published
+  if (!$entity->isPublished()) {
+    return;
+  }
+
+  // Get the email service
+  $email_service = \Drupal::service('player_finder_notifications.email_service');
+
+  // Send notifications to users who enabled new post notifications
+  $email_service->sendNewPostNotifications($entity);
+
+  \Drupal::logger('player_finder_notifications')->info('New post notifications sent for post @nid', [
+    '@nid' => $entity->id(),
+  ]);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert() for player_finder_application entities.
+ *
+ * Notify the post owner when someone applies to their event.
+ */
+function player_finder_notifications_node_insert_application(EntityInterface $entity) {
+  // This would be for application entities if they exist
+  // Implementation depends on how applications are structured in your Drupal setup
+
+  // For now, we'll handle this via the REST endpoint when someone applies
+}
+
+/**
+ * Implements hook_mail().
+ *
+ * Prepares email messages to be sent.
+ */
+function player_finder_notifications_mail($key, &$message, $params) {
+  $site_config = \Drupal::config('system.site');
+  $site_name = $site_config->get('name');
+  $site_mail = $site_config->get('mail');
+
+  $message['from'] = $site_mail;
+  $message['headers']['Content-Type'] = 'text/html; charset=UTF-8';
+
+  switch ($key) {
+    case 'event_reminder':
+      $node = $params['node'];
+      $user = $params['user'];
+      $participants = $params['participants'];
+
+      $message['subject'] = t('Emlékeztető: @title - Holnap találkozunk!', [
+        '@title' => $node->getTitle(),
+      ]);
+
+      $message['body'][] = _player_finder_notifications_format_reminder_email($node, $user, $participants);
+      break;
+
+    case 'new_post':
+      $node = $params['node'];
+      $user = $params['user'];
+
+      $message['subject'] = t('Új játékostárs hirdetés: @title', [
+        '@title' => $node->getTitle(),
+      ]);
+
+      $message['body'][] = _player_finder_notifications_format_new_post_email($node, $user);
+      break;
+
+    case 'invitation':
+      $node = $params['node'];
+      $user = $params['user'];
+      $inviter = $params['inviter'];
+
+      $message['subject'] = t('Meghívó játékos találkozóra: @title', [
+        '@title' => $node->getTitle(),
+      ]);
+
+      $message['body'][] = _player_finder_notifications_format_invitation_email($node, $user, $inviter);
+      break;
+
+    case 'new_application':
+      $node = $params['node'];
+      $owner = $params['owner'];
+      $applicant = $params['applicant'];
+
+      $message['subject'] = t('Új jelentkező a hirdetésedre: @title', [
+        '@title' => $node->getTitle(),
+      ]);
+
+      $message['body'][] = _player_finder_notifications_format_application_email($node, $owner, $applicant);
+      break;
+  }
+}
+
+/**
+ * Format reminder email body.
+ */
+function _player_finder_notifications_format_reminder_email($node, $user, $participants) {
+  $event_date = $node->get('field_event_date')->value;
+  $formatted_date = \Drupal::service('date.formatter')->format(
+    strtotime($event_date),
+    'custom',
+    'Y. F j. (l) H:i'
+  );
+
+  $location = $node->get('field_location')->value;
+  $location_text = $location === 'cafe' ? 'Board Game Cafe' : $location;
+
+  // Get game name
+  $game_name = 'Társasjáték';
+  if ($node->hasField('field_game') && !$node->get('field_game')->isEmpty()) {
+    $game = $node->get('field_game')->entity;
+    if ($game) {
+      $game_name = $game->getTitle();
+    }
+  }
+  elseif ($node->hasField('field_game_type') && !$node->get('field_game_type')->isEmpty()) {
+    $game_type = $node->get('field_game_type')->entity;
+    if ($game_type) {
+      $game_name = $game_type->getName();
+    }
+  }
+
+  // Build participants list
+  $participant_names = [];
+  foreach ($participants as $participant) {
+    $participant_names[] = $participant->getDisplayName();
+  }
+  $participants_list = implode('<br>  - ', $participant_names);
+
+  $contact = $node->get('field_contact')->value ?? '';
+  $description = $node->get('field_description')->value ?? '';
+
+  $post_url = \Drupal\Core\Url::fromRoute('entity.node.canonical', ['node' => $node->id()], ['absolute' => TRUE])->toString();
+
+  $body = <<<HTML
+<html>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+  <h2 style="color: #9acd32;">Szia {$user->getDisplayName()}!</h2>
+
+  <p>Ez egy emlékeztető a <strong>holnapi</strong> játékos találkozóról:</p>
+
+  <div style="background: #f5f5f5; padding: 20px; border-left: 4px solid #9acd32; margin: 20px 0;">
+    <p><strong>📅 Időpont:</strong> {$formatted_date}</p>
+    <p><strong>📍 Helyszín:</strong> {$location_text}</p>
+    <p><strong>🎲 Játék:</strong> {$game_name}</p>
+    <p><strong>👥 Résztvevők ({count($participants)} fő):</strong><br>
+      - {$participants_list}
+    </p>
+HTML;
+
+  if ($contact) {
+    $body .= "<p><strong>📞 Kapcsolat:</strong> {$contact}</p>";
+  }
+
+  if ($description) {
+    $body .= "<p><strong>💬 Leírás:</strong><br>{$description}</p>";
+  }
+
+  $body .= <<<HTML
+  </div>
+
+  <p><a href="{$post_url}" style="display: inline-block; padding: 10px 20px; background: #9acd32; color: white; text-decoration: none; border-radius: 5px;">Hirdetés megtekintése</a></p>
+
+  <p>Jó játékot! 🎲</p>
+
+  <hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;">
+  <p style="font-size: 12px; color: #666;">
+    Board Game Cafe - Játszókosan<br>
+    Üllői út 46, Budapest 1084<br>
+    <a href="https://jatsszokosan.hu">jatsszokosan.hu</a>
+  </p>
+</body>
+</html>
+HTML;
+
+  return $body;
+}
+
+/**
+ * Format new post notification email body.
+ */
+function _player_finder_notifications_format_new_post_email($node, $user) {
+  $event_date = $node->get('field_event_date')->value;
+  $formatted_date = \Drupal::service('date.formatter')->format(
+    strtotime($event_date),
+    'custom',
+    'F j. (l) H:i'
+  );
+
+  // Get game name
+  $game_info = 'Társasjáték';
+  if ($node->hasField('field_game') && !$node->get('field_game')->isEmpty()) {
+    $game = $node->get('field_game')->entity;
+    if ($game) {
+      $game_info = $game->getTitle();
+    }
+  }
+  elseif ($node->hasField('field_game_type') && !$node->get('field_game_type')->isEmpty()) {
+    $game_type = $node->get('field_game_type')->entity;
+    if ($game_type) {
+      $game_info = $game_type->getName();
+    }
+  }
+
+  $needed_players = $node->get('field_needed_players')->value;
+  $current_players = $node->get('field_current_players')->value;
+
+  $post_url = \Drupal\Core\Url::fromRoute('entity.node.canonical', ['node' => $node->id()], ['absolute' => TRUE])->toString();
+
+  $body = <<<HTML
+<html>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+  <h2 style="color: #9acd32;">Szia {$user->getDisplayName()}!</h2>
+
+  <p>Új játékostárs hirdetés jelent meg, ami érdekelhet:</p>
+
+  <div style="background: #f5f5f5; padding: 20px; border-left: 4px solid #ef8118; margin: 20px 0;">
+    <h3 style="margin-top: 0; color: #ef8118;">{$node->getTitle()}</h3>
+    <p><strong>📅 Időpont:</strong> {$formatted_date}</p>
+    <p><strong>🎲 Játék:</strong> {$game_info}</p>
+    <p><strong>👥 Létszám:</strong> {$current_players} / {$needed_players} fő</p>
+  </div>
+
+  <p><a href="{$post_url}" style="display: inline-block; padding: 10px 20px; background: #9acd32; color: white; text-decoration: none; border-radius: 5px;">Részletek és jelentkezés</a></p>
+
+  <hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;">
+  <p style="font-size: 12px; color: #666;">
+    Board Game Cafe - Játszókosan<br>
+    <a href="https://jatsszokosan.hu/pwa/profile">Értesítési beállítások módosítása</a>
+  </p>
+</body>
+</html>
+HTML;
+
+  return $body;
+}
+
+/**
+ * Format invitation email body.
+ */
+function _player_finder_notifications_format_invitation_email($node, $user, $inviter) {
+  $inviter_user = \Drupal::entityTypeManager()->getStorage('user')->load($inviter->id());
+  $inviter_name = $inviter_user ? $inviter_user->getDisplayName() : 'Valaki';
+
+  $event_date = $node->get('field_event_date')->value;
+  $formatted_date = \Drupal::service('date.formatter')->format(
+    strtotime($event_date),
+    'custom',
+    'F j. (l) H:i'
+  );
+
+  $location = $node->get('field_location')->value;
+  $location_text = $location === 'cafe' ? 'Board Game Cafe' : $location;
+
+  // Get game name
+  $game_info = 'Társasjáték';
+  if ($node->hasField('field_game') && !$node->get('field_game')->isEmpty()) {
+    $game = $node->get('field_game')->entity;
+    if ($game) {
+      $game_info = $game->getTitle();
+    }
+  }
+  elseif ($node->hasField('field_game_type') && !$node->get('field_game_type')->isEmpty()) {
+    $game_type = $node->get('field_game_type')->entity;
+    if ($game_type) {
+      $game_info = $game_type->getName();
+    }
+  }
+
+  $description = $node->get('field_description')->value ?? '';
+  $post_url = \Drupal\Core\Url::fromRoute('entity.node.canonical', ['node' => $node->id()], ['absolute' => TRUE])->toString();
+
+  $body = <<<HTML
+<html>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+  <h2 style="color: #9acd32;">Szia {$user->getDisplayName()}!</h2>
+
+  <p><strong>{$inviter_name}</strong> meghívott egy játékos találkozóra:</p>
+
+  <div style="background: #f5f5f5; padding: 20px; border-left: 4px solid #9acd32; margin: 20px 0;">
+    <h3 style="margin-top: 0;">{$node->getTitle()}</h3>
+    <p><strong>📅 Időpont:</strong> {$formatted_date}</p>
+    <p><strong>📍 Helyszín:</strong> {$location_text}</p>
+    <p><strong>🎲 Játék:</strong> {$game_info}</p>
+HTML;
+
+  if ($description) {
+    $body .= "<p><strong>💬 Leírás:</strong><br>{$description}</p>";
+  }
+
+  $body .= <<<HTML
+  </div>
+
+  <p><a href="{$post_url}" style="display: inline-block; padding: 10px 20px; background: #9acd32; color: white; text-decoration: none; border-radius: 5px;">Részletek és jelentkezés</a></p>
+
+  <p>Várunk szeretettel! 🎲</p>
+
+  <hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;">
+  <p style="font-size: 12px; color: #666;">
+    Board Game Cafe - Játszókosan<br>
+    Üllői út 46, Budapest 1084
+  </p>
+</body>
+</html>
+HTML;
+
+  return $body;
+}
+
+/**
+ * Format application notification email body.
+ */
+function _player_finder_notifications_format_application_email($node, $owner, $applicant) {
+  $post_url = \Drupal\Core\Url::fromRoute('entity.node.canonical', ['node' => $node->id()], ['absolute' => TRUE])->toString();
+
+  $current_players = $node->get('field_current_players')->value;
+  $needed_players = $node->get('field_needed_players')->value;
+
+  // Count applications
+  $application_count = \Drupal::entityQuery('node')
+    ->condition('type', 'player_finder_application')
+    ->condition('field_finder_post.target_id', $node->id())
+    ->condition('status', 1)
+    ->accessCheck(FALSE)
+    ->count()
+    ->execute();
+
+  $total_players = $current_players + $application_count;
+
+  $body = <<<HTML
+<html>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+  <h2 style="color: #9acd32;">Szia {$owner->getDisplayName()}!</h2>
+
+  <p><strong>{$applicant->getDisplayName()}</strong> jelentkezett a hirdetésedre:</p>
+
+  <div style="background: #f5f5f5; padding: 20px; border-left: 4px solid #ef8118; margin: 20px 0;">
+    <h3 style="margin-top: 0;">{$node->getTitle()}</h3>
+    <p><strong>👥 Jelenlegi létszám:</strong> {$total_players} / {$needed_players} fő</p>
+  </div>
+
+  <p><a href="{$post_url}" style="display: inline-block; padding: 10px 20px; background: #9acd32; color: white; text-decoration: none; border-radius: 5px;">Hirdetés megtekintése</a></p>
+
+  <hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;">
+  <p style="font-size: 12px; color: #666;">
+    Board Game Cafe - Játszókosan<br>
+    <a href="https://jatsszokosan.hu/pwa/profile">Értesítési beállítások módosítása</a>
+  </p>
+</body>
+</html>
+HTML;
+
+  return $body;
+}

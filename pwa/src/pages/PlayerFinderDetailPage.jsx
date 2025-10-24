@@ -167,6 +167,47 @@ function PlayerFinderDetailPage() {
     return applicant?.attributes?.display_name || applicant?.attributes?.name || 'Ismeretlen'
   }
 
+  const getGameTypeLabel = () => {
+    const gameTypesMap = {
+      'partijatekok': 'Partijátékok',
+      'gyors-jatekok': 'Gyors játékok',
+      'csaladi-jatekok': 'Családi játékok',
+      'osszetett-csaladi-jatekok': 'Összetett családi játékok',
+      'tarsasjatekok-tapasztalt-jatekosoknak': 'Tapasztalt játékosoknak',
+      'kartyajatekok': 'Kártyajátékok',
+      'kockajatekok': 'Kockajátékok',
+      'logikai-es-ugyessegi-jatekok': 'Logikai és ügyességi játékok',
+      'szo-es-betujatekok': 'Szó- és betűjátékok',
+      'gyerekjatekok': 'Gyerekjátékok',
+      'jatekok-felnotteknek-18-plusz': 'Felnőtt játékok (18+)',
+      'angol-nyelvu-jatekok': 'Angol nyelvű játékok',
+      'jatekok-2-jatekosnak': 'Kétfős játékok',
+      'spiel-des-jahres': 'Spiel des Jahres',
+      'kennerspiel-des-jahres': 'Kennerspiel des Jahres',
+      'retro-jatekok': 'Retro játékok'
+    }
+
+    if (!post?.relationships?.field_game_type?.data) {
+      return null
+    }
+
+    const gameTypeId = post.relationships.field_game_type.data.id
+    const gameTypeTerm = included?.find(item => item.id === gameTypeId && item.type === 'taxonomy_term--jatek_tipusok_polcrendszerben')
+
+    if (gameTypeTerm) {
+      // Try to get machine name from path or use the name
+      const pathAlias = gameTypeTerm.attributes.path?.alias || ''
+      if (pathAlias) {
+        const parts = pathAlias.split('/')
+        const machineName = parts[parts.length - 1] || ''
+        return gameTypesMap[machineName] || gameTypeTerm.attributes.name
+      }
+      return gameTypeTerm.attributes.name
+    }
+
+    return null
+  }
+
   const formatDate = (dateString) => {
     if (!dateString) return ''
     const date = new Date(dateString)
@@ -220,6 +261,7 @@ function PlayerFinderDetailPage() {
   }
 
   const gameName = getGameName()
+  const gameTypeLabel = getGameTypeLabel()
   const authorName = getAuthorName()
 
   return (
@@ -232,6 +274,26 @@ function PlayerFinderDetailPage() {
           </Link>
           {isOwner && (
             <div className="owner-actions">
+              <Link
+                to={`/player-finder/${id}/edit`}
+                className="btn-edit"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '8px 16px',
+                  background: '#9acd32',
+                  color: '#fff',
+                  textDecoration: 'none',
+                  borderRadius: '6px',
+                  fontWeight: 600,
+                  transition: 'background 0.2s',
+                  marginRight: '8px'
+                }}
+              >
+                <i className="bi bi-pencil"></i>
+                Szerkesztés
+              </Link>
               <button onClick={handleDelete} className="btn-delete">
                 <i className="bi bi-trash"></i>
                 Törlés
@@ -292,6 +354,16 @@ function PlayerFinderDetailPage() {
                   <div>
                     <strong>Játék</strong>
                     <p>{gameName}</p>
+                  </div>
+                </div>
+              )}
+
+              {!gameName && gameTypeLabel && (
+                <div className="info-item">
+                  <i className="bi bi-tag"></i>
+                  <div>
+                    <strong>Játék típusa</strong>
+                    <p>{gameTypeLabel}</p>
                   </div>
                 </div>
               )}

@@ -12,6 +12,7 @@ import GameLogPage from './pages/GameLogPage'
 import GameLogFormPage from './pages/GameLogFormPage'
 import PlayerFinderPage from './pages/PlayerFinderPage'
 import PlayerFinderFormPage from './pages/PlayerFinderFormPage'
+import PlayerFinderEditPage from './pages/PlayerFinderEditPage'
 import PlayerFinderDetailPage from './pages/PlayerFinderDetailPage'
 import ProtectedRoute from './components/ProtectedRoute'
 
@@ -21,7 +22,7 @@ function AppContent() {
   return (
     <div className="min-h-screen bg-gray-50">
         {/* Header */}
-        <header className="bg-gradient-to-r from-primary to-secondary text-white shadow-lg">
+        <header className="bg-gradient-to-r from-[#9acd32] to-[#ef8118] text-white shadow-lg">
           <div className="container mx-auto px-4 py-6">
             <h1 className="text-3xl font-bold">Board Game Cafe</h1>
             <p className="text-white/90">Üllői út 46, Budapest 1084</p>
@@ -43,7 +44,7 @@ function AppContent() {
                 {user ? (
                   <Link
                     to="/profile"
-                    className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary to-secondary text-white rounded-lg hover:shadow-lg transition-all duration-300"
+                    className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#9acd32] to-[#ef8118] text-white rounded-lg hover:shadow-lg transition-all duration-300"
                   >
                     <span className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center font-bold">
                       {user.name.charAt(0).toUpperCase()}
@@ -54,13 +55,13 @@ function AppContent() {
                   <>
                     <Link
                       to="/login"
-                      className="px-4 py-2 text-primary font-medium hover:text-secondary transition-colors"
+                      className="px-4 py-2 text-[#9acd32] font-medium hover:text-[#ef8118] transition-colors"
                     >
                       Bejelentkezés
                     </Link>
                     <Link
                       to="/register"
-                      className="px-4 py-2 bg-gradient-to-r from-primary to-secondary text-white rounded-lg hover:shadow-lg transition-all duration-300 font-medium"
+                      className="px-4 py-2 bg-gradient-to-r from-[#9acd32] to-[#ef8118] text-white rounded-lg hover:shadow-lg transition-all duration-300 font-medium"
                     >
                       Regisztráció
                     </Link>
@@ -111,6 +112,14 @@ function AppContent() {
               element={
                 <ProtectedRoute>
                   <PlayerFinderFormPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/player-finder/:id/edit"
+              element={
+                <ProtectedRoute>
+                  <PlayerFinderEditPage />
                 </ProtectedRoute>
               }
             />

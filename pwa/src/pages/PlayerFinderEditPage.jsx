@@ -1,15 +1,16 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import { createPlayerFinderPost } from '../services/playerFinderService'
-import { fetchGames } from '../services/drupalApi'
+import { fetchPlayerFinderPost, updatePlayerFinderPost } from '../services/playerFinderService'
 import { getCsrfToken } from '../services/authService'
 import './PlayerFinderFormPage.css'
 
-function PlayerFinderFormPage() {
+function PlayerFinderEditPage() {
+  const { id } = useParams()
   const navigate = useNavigate()
   const { user } = useAuth()
   const [loading, setLoading] = useState(false)
+  const [loadingData, setLoadingData] = useState(true)
   const [error, setError] = useState(null)
   const [gameSearch, setGameSearch] = useState('')
   const [gameResults, setGameResults] = useState([])
@@ -51,17 +52,83 @@ function PlayerFinderFormPage() {
     { value: 'retro-jatekok', label: 'Retro játékok' }
   ]
 
+  // Load existing post data
   useEffect(() => {
     if (!user) {
       navigate('/login')
       return
     }
-    // Set user contact info
-    setFormData(prev => ({
-      ...prev,
-      field_contact: user.mail || user.email || ''
-    }))
-  }, [user, navigate])
+    loadPostData()
+  }, [id, user, navigate])
+
+  const loadPostData = async () => {
+    try {
+      setLoadingData(true)
+      const data = await fetchPlayerFinderPost(id)
+      const post = data.data
+
+      // Check if user is owner
+      const postAuthorUuid = post.relationships?.uid?.data?.id
+      const postAuthor = data.included?.find(item => item.id === postAuthorUuid && item.type === 'user--user')
+      const postAuthorDrupalId = postAuthor?.attributes?.drupal_internal__uid
+      const currentUserId = user?.uid || user?.id
+
+      if (String(postAuthorDrupalId) !== String(currentUserId)) {
+        setError('Csak a saját hirdetésedet módosíthatod!')
+        return
+      }
+
+      // Format date for datetime-local input
+      const eventDate = post.attributes.field_event_date ?
+        new Date(post.attributes.field_event_date).toISOString().slice(0, 16) : ''
+
+      // Extract game type value from relationship if exists
+      let gameTypeValue = ''
+      if (post.relationships?.field_game_type?.data) {
+        const gameTypeId = post.relationships.field_game_type.data.id
+        const gameTypeTerm = data.included?.find(item => item.id === gameTypeId && item.type === 'taxonomy_term--jatek_tipusok_polcrendszerben')
+        if (gameTypeTerm) {
+          // Try to extract the machine name from path alias
+          const pathAlias = gameTypeTerm.attributes.path?.alias || ''
+          if (pathAlias) {
+            // Extract last part of path (e.g., '/jatek-tipusok/partijatekok' -> 'partijatekok')
+            const parts = pathAlias.split('/')
+            gameTypeValue = parts[parts.length - 1] || ''
+          }
+        }
+      }
+
+      setFormData({
+        title: post.attributes.title || '',
+        field_event_date: eventDate,
+        field_location: post.attributes.field_location || 'cafe',
+        field_event_type: post.attributes.field_event_type || 'egyeni',
+        field_needed_players: post.attributes.field_needed_players || 4,
+        field_current_players: post.attributes.field_current_players || 1,
+        field_contact: post.attributes.field_contact || '',
+        field_description: post.attributes.field_description || '',
+        field_status: post.attributes.field_status || 'active',
+        field_experience_level: post.attributes.field_experience_level || '',
+        field_game: post.relationships?.field_game?.data?.id || '',
+        field_game_type: gameTypeValue
+      })
+
+      // Load selected game if exists
+      if (post.relationships?.field_game?.data) {
+        const gameId = post.relationships.field_game.data.id
+        const game = data.included?.find(item => item.id === gameId && item.type === 'node--tarsasjatek')
+        if (game) {
+          setSelectedGame(game)
+          setGameSearch(game.attributes.title)
+        }
+      }
+    } catch (err) {
+      setError('Hiba történt az adatok betöltése során.')
+      console.error(err)
+    } finally {
+      setLoadingData(false)
+    }
+  }
 
   // Game search with debounce
   useEffect(() => {
@@ -97,6 +164,25 @@ function PlayerFinderFormPage() {
     } finally {
       setSearchingGames(false)
     }
+  }
+
+  const generateTitle = (gameName, gameType, eventDate) => {
+    const gameInfo = gameName || gameType
+
+    if (!gameInfo && !eventDate) {
+      return 'Játékostárs keresés'
+    }
+    if (!gameInfo) {
+      const date = new Date(eventDate)
+      const formatted = date.toLocaleDateString('hu-HU', { month: 'long', day: 'numeric' })
+      return `Játékostárs keresés - ${formatted}`
+    }
+    if (!eventDate) {
+      return `${gameInfo} - Játékostárs keresés`
+    }
+    const date = new Date(eventDate)
+    const formatted = date.toLocaleDateString('hu-HU', { month: 'long', day: 'numeric' })
+    return `${gameInfo} - ${formatted}`
   }
 
   const handleGameSelect = (game) => {
@@ -138,25 +224,6 @@ function PlayerFinderFormPage() {
     })
   }
 
-  const generateTitle = (gameName, gameType, eventDate) => {
-    const gameInfo = gameName || gameType
-
-    if (!gameInfo && !eventDate) {
-      return 'Játékostárs keresés'
-    }
-    if (!gameInfo) {
-      const date = new Date(eventDate)
-      const formatted = date.toLocaleDateString('hu-HU', { month: 'long', day: 'numeric' })
-      return `Játékostárs keresés - ${formatted}`
-    }
-    if (!eventDate) {
-      return `${gameInfo} - Játékostárs keresés`
-    }
-    const date = new Date(eventDate)
-    const formatted = date.toLocaleDateString('hu-HU', { month: 'long', day: 'numeric' })
-    return `${gameInfo} - ${formatted}`
-  }
-
   const handleSubmit = async (e) => {
     e.preventDefault()
 
@@ -178,7 +245,7 @@ function PlayerFinderFormPage() {
 
       const csrfToken = await getCsrfToken()
 
-      // Format date to RFC 3339 with explicit timezone offset (Drupal requires +HH:MM format, not Z)
+      // Format date to RFC 3339
       const eventDate = new Date(formData.field_event_date)
       const year = eventDate.getFullYear()
       const month = String(eventDate.getMonth() + 1).padStart(2, '0')
@@ -187,7 +254,6 @@ function PlayerFinderFormPage() {
       const minutes = String(eventDate.getMinutes()).padStart(2, '0')
       const seconds = String(eventDate.getSeconds()).padStart(2, '0')
 
-      // Get timezone offset in +HH:MM format
       const tzOffset = -eventDate.getTimezoneOffset()
       const tzHours = String(Math.floor(Math.abs(tzOffset) / 60)).padStart(2, '0')
       const tzMinutes = String(Math.abs(tzOffset) % 60).padStart(2, '0')
@@ -234,14 +300,10 @@ function PlayerFinderFormPage() {
             }
           )
           const taxonomyData = await taxonomyResponse.json()
-          console.log('Taxonomy terms:', taxonomyData.data)
 
           // Find term by matching machine name (stored in name field or path)
           if (taxonomyData && taxonomyData.data) {
-            // The value we have is like 'partijatekok', need to find matching term
-            // Try to match by checking if the path alias or name contains our value
             const matchingTerm = taxonomyData.data.find(term => {
-              // Check various fields to find a match
               const termName = term.attributes.name?.toLowerCase() || ''
               const termPath = term.attributes.path?.alias?.toLowerCase() || ''
               const searchValue = formData.field_game_type.toLowerCase()
@@ -250,7 +312,6 @@ function PlayerFinderFormPage() {
             })
 
             if (matchingTerm) {
-              console.log('Found matching term:', matchingTerm)
               postData.relationships.field_game_type = {
                 data: {
                   type: 'taxonomy_term--jatek_tipusok_polcrendszerben',
@@ -266,27 +327,33 @@ function PlayerFinderFormPage() {
         }
       }
 
-      await createPlayerFinderPost(postData, csrfToken)
+      await updatePlayerFinderPost(id, postData, csrfToken)
 
-      navigate('/player-finder')
+      navigate(`/player-finder/${id}`)
     } catch (err) {
-      setError('Hiba történt a hirdetés létrehozása során.')
+      setError('Hiba történt a hirdetés frissítése során.')
       console.error(err)
     } finally {
       setLoading(false)
     }
   }
 
-  if (!user) {
-    return null
+  if (!user || loadingData) {
+    return (
+      <div className="player-finder-form-page">
+        <div className="form-container">
+          <p>Betöltés...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
     <div className="player-finder-form-page">
       <div className="form-container">
-        <h1>Új játékostárs hirdetés</h1>
+        <h1>Hirdetés szerkesztése</h1>
         <p className="form-description">
-          Töltsd ki az alábbi űrlapot, hogy játékostársakat találj!
+          Módosítsd a hirdetés adatait!
         </p>
 
         {error && (
@@ -309,7 +376,6 @@ function PlayerFinderFormPage() {
               onChange={handleChange}
               required
             />
-            <small className="field-note">Helyszín: Board Game Cafe</small>
           </div>
 
           <div className="form-row">
@@ -467,10 +533,26 @@ function PlayerFinderFormPage() {
             ></textarea>
           </div>
 
+          <div className="form-group">
+            <label htmlFor="field_status">
+              Státusz
+            </label>
+            <select
+              id="field_status"
+              name="field_status"
+              value={formData.field_status}
+              onChange={handleChange}
+            >
+              <option value="active">Aktív</option>
+              <option value="full">Betelt</option>
+              <option value="expired">Lejárt</option>
+            </select>
+          </div>
+
           <div className="form-actions">
             <button
               type="button"
-              onClick={() => navigate('/player-finder')}
+              onClick={() => navigate(`/player-finder/${id}`)}
               className="btn-cancel"
               disabled={loading}
             >
@@ -489,7 +571,7 @@ function PlayerFinderFormPage() {
               ) : (
                 <>
                   <i className="bi bi-check-circle"></i>
-                  Hirdetés feladása
+                  Módosítások mentése
                 </>
               )}
             </button>
@@ -500,4 +582,4 @@ function PlayerFinderFormPage() {
   )
 }
 
-export default PlayerFinderFormPage
+export default PlayerFinderEditPage

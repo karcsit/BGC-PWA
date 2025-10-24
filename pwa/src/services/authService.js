@@ -125,6 +125,34 @@ export const authService = {
    */
   isAuthenticated() {
     return !!localStorage.getItem('csrf_token') && !!localStorage.getItem('user')
+  },
+
+  /**
+   * Fetch a fresh CSRF token from Drupal
+   * This is needed because tokens can expire
+   * @returns {Promise<string>} Fresh CSRF token
+   */
+  async refreshCsrfToken() {
+    try {
+      const response = await fetch(`${API_BASE}/session/token`, {
+        credentials: 'include'
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch CSRF token')
+      }
+
+      const token = await response.text()
+
+      // Update stored token
+      localStorage.setItem('csrf_token', token)
+
+      console.log('✅ CSRF token refreshed')
+      return token
+    } catch (error) {
+      console.error('❌ Error refreshing CSRF token:', error)
+      throw error
+    }
   }
 }
 
@@ -134,4 +162,13 @@ export const authService = {
  */
 export function getCsrfToken() {
   return localStorage.getItem('csrf_token')
+}
+
+/**
+ * Get a fresh CSRF token (async version)
+ * Use this before making POST/PATCH/DELETE requests
+ * @returns {Promise<string>} Fresh CSRF token
+ */
+export async function getFreshCsrfToken() {
+  return await authService.refreshCsrfToken()
 }

@@ -1,9 +1,11 @@
+import { getFreshCsrfToken } from './authService.js'
+
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'https://jatsszokosan.hu'
 
 // Fetch all player finder posts
 export async function fetchPlayerFinderPosts() {
   try {
-    const url = `${API_BASE}/jsonapi/node/player_finder?include=field_game,uid&sort=-created`
+    const url = `${API_BASE}/jsonapi/node/player_finder?include=field_game,field_game_type,uid&sort=-created`
 
     const response = await fetch(url, {
       credentials: 'include',
@@ -27,7 +29,7 @@ export async function fetchPlayerFinderPosts() {
 // Fetch a single player finder post by ID
 export async function fetchPlayerFinderPost(id) {
   try {
-    const url = `${API_BASE}/jsonapi/node/player_finder/${id}?include=field_game,uid`
+    const url = `${API_BASE}/jsonapi/node/player_finder/${id}?include=field_game,field_game_type,uid`
 
     const response = await fetch(url, {
       credentials: 'include',
@@ -49,9 +51,27 @@ export async function fetchPlayerFinderPost(id) {
 }
 
 // Create a new player finder post
-export async function createPlayerFinderPost(postData, csrfToken) {
+export async function createPlayerFinderPost(postData, csrfToken = null) {
   try {
+    // Fetch fresh token if not provided
+    if (!csrfToken) {
+      console.log('🔄 Fetching fresh CSRF token...')
+      csrfToken = await getFreshCsrfToken()
+    }
+
     const url = `${API_BASE}/jsonapi/node/player_finder`
+
+    const payload = {
+      data: {
+        type: 'node--player_finder',
+        attributes: postData.attributes || postData
+      }
+    }
+
+    // Add relationships if provided
+    if (postData.relationships && Object.keys(postData.relationships).length > 0) {
+      payload.data.relationships = postData.relationships
+    }
 
     const response = await fetch(url, {
       method: 'POST',
@@ -61,12 +81,7 @@ export async function createPlayerFinderPost(postData, csrfToken) {
         'Content-Type': 'application/vnd.api+json',
         'X-CSRF-Token': csrfToken
       },
-      body: JSON.stringify({
-        data: {
-          type: 'node--player_finder',
-          attributes: postData
-        }
-      })
+      body: JSON.stringify(payload)
     })
 
     if (!response.ok) {
@@ -83,9 +98,28 @@ export async function createPlayerFinderPost(postData, csrfToken) {
 }
 
 // Update a player finder post
-export async function updatePlayerFinderPost(id, postData, csrfToken) {
+export async function updatePlayerFinderPost(id, postData, csrfToken = null) {
   try {
+    // Fetch fresh token if not provided
+    if (!csrfToken) {
+      console.log('🔄 Fetching fresh CSRF token...')
+      csrfToken = await getFreshCsrfToken()
+    }
+
     const url = `${API_BASE}/jsonapi/node/player_finder/${id}`
+
+    const payload = {
+      data: {
+        type: 'node--player_finder',
+        id: id,
+        attributes: postData.attributes || postData
+      }
+    }
+
+    // Add relationships if provided
+    if (postData.relationships && Object.keys(postData.relationships).length > 0) {
+      payload.data.relationships = postData.relationships
+    }
 
     const response = await fetch(url, {
       method: 'PATCH',
@@ -95,13 +129,7 @@ export async function updatePlayerFinderPost(id, postData, csrfToken) {
         'Content-Type': 'application/vnd.api+json',
         'X-CSRF-Token': csrfToken
       },
-      body: JSON.stringify({
-        data: {
-          type: 'node--player_finder',
-          id: id,
-          attributes: postData
-        }
-      })
+      body: JSON.stringify(payload)
     })
 
     if (!response.ok) {
@@ -118,8 +146,14 @@ export async function updatePlayerFinderPost(id, postData, csrfToken) {
 }
 
 // Delete a player finder post
-export async function deletePlayerFinderPost(id, csrfToken) {
+export async function deletePlayerFinderPost(id, csrfToken = null) {
   try {
+    // Fetch fresh token if not provided
+    if (!csrfToken) {
+      console.log('🔄 Fetching fresh CSRF token...')
+      csrfToken = await getFreshCsrfToken()
+    }
+
     const url = `${API_BASE}/jsonapi/node/player_finder/${id}`
 
     const response = await fetch(url, {
@@ -166,8 +200,14 @@ export async function fetchApplications(postId) {
 }
 
 // Create an application
-export async function createApplication(applicationData, csrfToken) {
+export async function createApplication(applicationData, csrfToken = null) {
   try {
+    // Fetch fresh token if not provided
+    if (!csrfToken) {
+      console.log('🔄 Fetching fresh CSRF token...')
+      csrfToken = await getFreshCsrfToken()
+    }
+
     const url = `${API_BASE}/jsonapi/node/player_finder_application`
 
     const response = await fetch(url, {

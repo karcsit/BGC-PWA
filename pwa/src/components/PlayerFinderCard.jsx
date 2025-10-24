@@ -1,7 +1,27 @@
 import { Link } from 'react-router-dom'
 import './PlayerFinderCard.css'
 
-function PlayerFinderCard({ post, included }) {
+function PlayerFinderCard({ post, included, applicationCount = 0 }) {
+  // Game types lookup
+  const gameTypesMap = {
+    'partijatekok': 'Partijátékok',
+    'gyors-jatekok': 'Gyors játékok',
+    'csaladi-jatekok': 'Családi játékok',
+    'osszetett-csaladi-jatekok': 'Összetett családi játékok',
+    'tarsasjatekok-tapasztalt-jatekosoknak': 'Tapasztalt játékosoknak',
+    'kartyajatekok': 'Kártyajátékok',
+    'kockajatekok': 'Kockajátékok',
+    'logikai-es-ugyessegi-jatekok': 'Logikai és ügyességi játékok',
+    'szo-es-betujatekok': 'Szó- és betűjátékok',
+    'gyerekjatekok': 'Gyerekjátékok',
+    'jatekok-felnotteknek-18-plusz': 'Felnőtt játékok (18+)',
+    'angol-nyelvu-jatekok': 'Angol nyelvű játékok',
+    'jatekok-2-jatekosnak': 'Kétfős játékok',
+    'spiel-des-jahres': 'Spiel des Jahres',
+    'kennerspiel-des-jahres': 'Kennerspiel des Jahres',
+    'retro-jatekok': 'Retro játékok'
+  }
+
   // Get game name if referenced
   const getGameName = () => {
     if (!post.relationships?.field_game?.data) {
@@ -12,6 +32,29 @@ function PlayerFinderCard({ post, included }) {
     const game = included?.find(item => item.id === gameId && item.type === 'node--tarsasjatek')
 
     return game?.attributes?.title || null
+  }
+
+  // Get game type label from relationship
+  const getGameTypeLabel = () => {
+    if (!post.relationships?.field_game_type?.data) {
+      return null
+    }
+
+    const gameTypeId = post.relationships.field_game_type.data.id
+    const gameTypeTerm = included?.find(item => item.id === gameTypeId && item.type === 'taxonomy_term--jatek_tipusok_polcrendszerben')
+
+    if (gameTypeTerm) {
+      // Try to get machine name from path or use the name
+      const pathAlias = gameTypeTerm.attributes.path?.alias || ''
+      if (pathAlias) {
+        const parts = pathAlias.split('/')
+        const machineName = parts[parts.length - 1] || ''
+        return gameTypesMap[machineName] || gameTypeTerm.attributes.name
+      }
+      return gameTypeTerm.attributes.name
+    }
+
+    return null
   }
 
   // Get author name
@@ -40,8 +83,11 @@ function PlayerFinderCard({ post, included }) {
   }
 
   const gameName = getGameName()
+  const gameTypeLabel = getGameTypeLabel()
   const authorName = getAuthorName()
-  const playerInfo = `${post.attributes.field_current_players || 0} / ${post.attributes.field_needed_players || 0}`
+  // Calculate current players: field_current_players (initial) + applicationCount (new applications)
+  const currentPlayers = (post.attributes.field_current_players || 0) + applicationCount
+  const playerInfo = `${currentPlayers} / ${post.attributes.field_needed_players || 0}`
 
   return (
     <div className="player-finder-card">
@@ -54,6 +100,36 @@ function PlayerFinderCard({ post, included }) {
         </span>
       </div>
 
+      {gameName && (
+        <div style={{
+          fontSize: '1.1rem',
+          fontWeight: '600',
+          color: '#9acd32',
+          marginBottom: '12px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px'
+        }}>
+          <i className="bi bi-dice-5" style={{ fontSize: '1.3rem' }}></i>
+          <span>{gameName}</span>
+        </div>
+      )}
+
+      {!gameName && gameTypeLabel && (
+        <div style={{
+          fontSize: '1.1rem',
+          fontWeight: '600',
+          color: '#ef8118',
+          marginBottom: '12px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px'
+        }}>
+          <i className="bi bi-tag" style={{ fontSize: '1.3rem' }}></i>
+          <span>{gameTypeLabel}</span>
+        </div>
+      )}
+
       {post.attributes.field_event_date && (
         <div className="card-detail">
           <i className="bi bi-calendar-event"></i>
@@ -65,13 +141,6 @@ function PlayerFinderCard({ post, included }) {
         <div className="card-detail">
           <i className="bi bi-geo-alt"></i>
           <span>{post.attributes.field_location === 'cafe' ? 'Board Game Cafe' : post.attributes.field_location === 'home' ? 'Otthon' : post.attributes.field_location}</span>
-        </div>
-      )}
-
-      {gameName && (
-        <div className="card-detail">
-          <i className="bi bi-dice-5"></i>
-          <span>{gameName}</span>
         </div>
       )}
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import { fetchPlayerFinderPosts } from '../services/playerFinderService'
+import { fetchPlayerFinderPosts, fetchApplications } from '../services/playerFinderService'
 import PlayerFinderCard from '../components/PlayerFinderCard'
 import './PlayerFinderPage.css'
 
@@ -9,6 +9,7 @@ function PlayerFinderPage() {
   const { user } = useAuth()
   const [posts, setPosts] = useState([])
   const [included, setIncluded] = useState([])
+  const [applicationCounts, setApplicationCounts] = useState({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [filter, setFilter] = useState('all') // all, open, my
@@ -23,6 +24,20 @@ function PlayerFinderPage() {
       const data = await fetchPlayerFinderPosts()
       setPosts(data.data || [])
       setIncluded(data.included || [])
+
+      // Load application counts for all posts
+      const counts = {}
+      for (const post of data.data || []) {
+        try {
+          const appsData = await fetchApplications(post.id)
+          counts[post.id] = appsData.data?.length || 0
+        } catch (err) {
+          console.error(`Error loading applications for post ${post.id}:`, err)
+          counts[post.id] = 0
+        }
+      }
+      setApplicationCounts(counts)
+
       setError(null)
     } catch (err) {
       setError('Hiba történt a hirdetések betöltése során.')
@@ -129,6 +144,7 @@ function PlayerFinderPage() {
               key={post.id}
               post={post}
               included={included}
+              applicationCount={applicationCounts[post.id] || 0}
             />
           ))}
         </div>

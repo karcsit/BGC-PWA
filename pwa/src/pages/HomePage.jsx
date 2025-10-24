@@ -7,37 +7,37 @@ function HomePage() {
       title: '🎲 Játékok',
       description: '1500+ társasjáték',
       link: '/games',
-      color: 'bg-primary hover:bg-[#8ab82d]'
+      color: 'bg-[#9acd32] hover:bg-[#8ab82d]'
     },
     {
       title: '📖 Játéknapló',
       description: 'Játékok nyilvántartása',
       link: '/game-log',
-      color: 'bg-secondary hover:bg-[#d67215]'
+      color: 'bg-[#ef8118] hover:bg-[#d67215]'
     },
     {
       title: '🍽️ Menü',
       description: 'Ételek és italok',
       link: '/menu',
-      color: 'bg-accent hover:bg-[#850f11]'
+      color: 'bg-[#98191b] hover:bg-[#850f11]'
     },
     {
       title: '📅 Foglalás',
       description: 'Asztal foglalása',
       link: '/booking',
-      color: 'bg-primary hover:bg-[#8ab82d]'
+      color: 'bg-[#9acd32] hover:bg-[#8ab82d]'
     },
     {
       title: '🎉 Események',
       description: 'Programok és versenyek',
       link: '/events',
-      color: 'bg-secondary hover:bg-[#d67215]'
+      color: 'bg-[#ef8118] hover:bg-[#d67215]'
     },
     {
       title: '👥 Játékostárs kereső',
       description: 'Találj társakat',
       link: '/player-finder',
-      color: 'bg-primary hover:bg-[#8ab82d]'
+      color: 'bg-[#9acd32] hover:bg-[#8ab82d]'
     },
     {
       title: 'ℹ️ Rólunk',
