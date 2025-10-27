@@ -73,6 +73,9 @@ export async function createPlayerFinderPost(postData, csrfToken = null) {
       payload.data.relationships = postData.relationships
     }
 
+    console.log('📤 Creating player finder post with payload:', JSON.stringify(payload, null, 2))
+    console.log('🔐 Using CSRF token:', csrfToken ? csrfToken.substring(0, 20) + '...' : 'MISSING')
+
     const response = await fetch(url, {
       method: 'POST',
       credentials: 'include',

@@ -199,17 +199,23 @@ function PlayerFinderFormPage() {
           field_location: formData.field_location,
           field_needed_players: parseInt(formData.field_needed_players),
           field_current_players: parseInt(formData.field_current_players),
-          field_contact: formData.field_contact,
-          field_description: formData.field_description,
-          field_status: formData.field_status,
-          field_experience_level: formData.field_experience_level
+          field_status: formData.field_status
         },
         relationships: {}
       }
 
-      // Only include field_event_type if it has a value
+      // Only include optional fields if they have values
       if (formData.field_event_type) {
         postData.attributes.field_event_type = formData.field_event_type
+      }
+      if (formData.field_contact) {
+        postData.attributes.field_contact = formData.field_contact
+      }
+      if (formData.field_description) {
+        postData.attributes.field_description = formData.field_description
+      }
+      if (formData.field_experience_level) {
+        postData.attributes.field_experience_level = formData.field_experience_level
       }
 
       // Add game relationship if selected
