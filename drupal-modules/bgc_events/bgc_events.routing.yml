@@ -1,23 +1,37 @@
 bgc_events.register:
-  path: '/api/event/{uuid}/register'
+  path: '/api/event/{node}/register'
   defaults:
     _controller: '\Drupal\bgc_events\Controller\EventRegistrationController::register'
   requirements:
     _user_is_logged_in: 'TRUE'
+    _csrf_token: 'TRUE'
   methods: [POST]
+  options:
+    parameters:
+      node:
+        type: entity:node
 
 bgc_events.unregister:
-  path: '/api/event/{uuid}/unregister'
+  path: '/api/event/{node}/unregister'
   defaults:
     _controller: '\Drupal\bgc_events\Controller\EventRegistrationController::unregister'
   requirements:
     _user_is_logged_in: 'TRUE'
+    _csrf_token: 'TRUE'
   methods: [POST]
+  options:
+    parameters:
+      node:
+        type: entity:node
 
 bgc_events.status:
-  path: '/api/event/{uuid}/status'
+  path: '/api/event/{node}/status'
   defaults:
     _controller: '\Drupal\bgc_events\Controller\EventRegistrationController::status'
   requirements:
     _user_is_logged_in: 'TRUE'
   methods: [GET]
+  options:
+    parameters:
+      node:
+        type: entity:node

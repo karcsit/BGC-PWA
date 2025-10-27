@@ -5,7 +5,7 @@ const API_BASE = ''
  */
 export async function fetchEvents() {
   try {
-    const url = `${API_BASE}/jsonapi/node/esemeny?include=field_event_image,field_event_image.field_media_image,field_participants,field_waitlist&sort=-field_event_date`
+    const url = `${API_BASE}/jsonapi/node/esemeny?include=field_event_image,field_participants,field_waitlist&sort=-field_event_date`
 
     const response = await fetch(url, {
       credentials: 'include',

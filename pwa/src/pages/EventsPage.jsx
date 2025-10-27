@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import { fetchEvents } from '../services/eventService'
 import EventCard from '../components/EventCard'
+import EventListItem from '../components/EventListItem'
 import EventCalendar from '../components/EventCalendar'
+import { useAuth } from '../context/AuthContext'
 
 function EventsPage() {
+  const { user } = useAuth()
   const [events, setEvents] = useState([])
   const [included, setIncluded] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [filter, setFilter] = useState('upcoming') // 'upcoming', 'past', 'all'
-  const [view, setView] = useState('list') // 'list', 'calendar'
+  const [view, setView] = useState('cards') // 'list', 'cards', 'calendar'
 
   useEffect(() => {
     loadEvents()
@@ -79,16 +82,37 @@ function EventsPage() {
   return (
     <div className="max-w-6xl mx-auto">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">Események</h1>
-        <p className="text-gray-600">
-          Csatlakozz programjainkhoz és versenyeinkhez!
-        </p>
+      <div className="mb-8 flex justify-between items-start flex-wrap gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">Események</h1>
+          <p className="text-gray-600">
+            Csatlakozz programjainkhoz és versenyeinkhez!
+          </p>
+        </div>
+        {user && (
+          <a
+            href="/node/add/esemeny"
+            className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium flex items-center gap-2"
+          >
+            <span className="text-xl">+</span>
+            Új esemény
+          </a>
+        )}
       </div>
 
       {/* View Toggle */}
       <div className="flex gap-2 mb-6 flex-wrap items-center justify-between">
         <div className="flex gap-2">
+          <button
+            onClick={() => setView('cards')}
+            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+              view === 'cards'
+                ? 'bg-primary text-white'
+                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+            }`}
+          >
+            Kártyák
+          </button>
           <button
             onClick={() => setView('list')}
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
@@ -97,7 +121,7 @@ function EventsPage() {
                 : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
             }`}
           >
-            📋 Lista
+            Lista
           </button>
           <button
             onClick={() => setView('calendar')}
@@ -107,12 +131,12 @@ function EventsPage() {
                 : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
             }`}
           >
-            📅 Naptár
+            Naptár
           </button>
         </div>
 
-        {/* Filters - only for list view */}
-        {view === 'list' && (
+        {/* Filters - only for list and cards view */}
+        {(view === 'list' || view === 'cards') && (
           <div className="flex gap-2 flex-wrap">
             <button
               onClick={() => setFilter('upcoming')}
@@ -153,8 +177,33 @@ function EventsPage() {
         <EventCalendar events={events} included={included} />
       )}
 
-      {/* List View */}
+      {/* List View (Compact) */}
       {view === 'list' && (
+        <>
+          {filteredEvents.length === 0 ? (
+            <div className="text-center py-12 bg-gray-50 rounded-lg">
+              <p className="text-gray-600 text-lg">
+                {filter === 'upcoming' && 'Jelenleg nincsenek közelgő események.'}
+                {filter === 'past' && 'Még nem volt lezárult esemény.'}
+                {filter === 'all' && 'Még nincsenek események.'}
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {filteredEvents.map(event => (
+                <EventListItem
+                  key={event.id}
+                  event={event}
+                  included={included}
+                />
+              ))}
+            </div>
+          )}
+        </>
+      )}
+
+      {/* Cards View (Grid) */}
+      {view === 'cards' && (
         <>
           {filteredEvents.length === 0 ? (
             <div className="text-center py-12 bg-gray-50 rounded-lg">

@@ -50,23 +50,25 @@ function EventCard({ event, included }) {
       return null
     }
 
-    const mediaId = event.relationships.field_event_image.data.id
-    const mediaEntity = included?.find(item => item.id === mediaId && item.type === 'media--image')
+    const imageId = event.relationships.field_event_image.data.id
 
-    if (!mediaEntity) {
-      return null
-    }
-
-    // Get the actual file from media entity's field_media_image
-    const fileId = mediaEntity.relationships?.field_media_image?.data?.id
-    if (!fileId) {
-      return null
-    }
-
-    const fileEntity = included?.find(item => item.id === fileId && item.type === 'file--file')
-
+    // Try to find as file--file (Image field)
+    const fileEntity = included?.find(item => item.id === imageId && item.type === 'file--file')
     if (fileEntity?.attributes?.uri?.url) {
       return `https://jatsszokosan.hu${fileEntity.attributes.uri.url}`
+    }
+
+    // Fallback: try to find as media entity (Media field)
+    const mediaEntity = included?.find(item => item.id === imageId && item.type === 'media--image')
+    if (mediaEntity) {
+      // Get the actual file from media entity's field_media_image
+      const fileId = mediaEntity.relationships?.field_media_image?.data?.id
+      if (fileId) {
+        const fileEntity = included?.find(item => item.id === fileId && item.type === 'file--file')
+        if (fileEntity?.attributes?.uri?.url) {
+          return `https://jatsszokosan.hu${fileEntity.attributes.uri.url}`
+        }
+      }
     }
 
     return null
@@ -129,15 +131,25 @@ function EventCard({ event, included }) {
   // Determine if event is in the past
   const isPastEvent = eventDate && new Date(eventDate) < new Date()
 
+  // Debug logging
+  console.log('EventCard Debug:', {
+    title,
+    isPastEvent,
+    user: !!user,
+    userName: user?.name,
+    status,
+    showButton: !isPastEvent && user
+  })
+
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
       {/* Event Image */}
       {imageUrl && (
-        <div className="h-48 overflow-hidden bg-gray-200">
+        <div className="h-64 overflow-hidden bg-gray-200">
           <img
             src={imageUrl}
             alt={title}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
           />
         </div>
       )}
@@ -211,32 +223,20 @@ function EventCard({ event, included }) {
         )}
 
         {/* Action Buttons */}
-        {!isPastEvent && user && status && (
-          <div className="flex gap-2">
-            {!status.is_registered && !status.is_waitlisted && (
-              <button
-                onClick={handleRegister}
-                disabled={loading}
-                className="flex-1 px-4 py-2 bg-gradient-to-r from-primary to-secondary text-white font-semibold rounded-lg hover:shadow-lg transition-all duration-300 disabled:opacity-50"
-              >
-                {loading ? 'Jelentkezés...' : 'Jelentkezem'}
-              </button>
-            )}
-            {(status.is_registered || status.is_waitlisted) && (
-              <button
-                onClick={handleUnregister}
-                disabled={loading}
-                className="flex-1 px-4 py-2 bg-gray-600 text-white font-semibold rounded-lg hover:bg-gray-700 transition-all duration-300 disabled:opacity-50"
-              >
-                {loading ? 'Lejelentkezés...' : 'Lejelentkezem'}
-              </button>
-            )}
-          </div>
+        {!isPastEvent && user && (
+          <button
+            onClick={handleRegister}
+            disabled={loading}
+            className="w-full px-6 py-3 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-lg hover:shadow-lg transition-all duration-300 disabled:opacity-50 text-lg"
+          >
+            {loading ? 'Jelentkezés...' : '✓ Jelentkezem'}
+          </button>
         )}
 
         {!user && !isPastEvent && (
-          <div className="p-3 bg-yellow-50 text-yellow-800 rounded text-sm text-center">
-            Jelentkezéshez először jelentkezz be!
+          <div className="p-4 bg-yellow-100 border-2 border-yellow-400 rounded-lg text-center">
+            <p className="text-yellow-900 font-bold mb-2">⚠️ Nem vagy bejelentkezve!</p>
+            <p className="text-yellow-800 text-sm">Jelentkezéshez először jelentkezz be a Profil menüben.</p>
           </div>
         )}
 
