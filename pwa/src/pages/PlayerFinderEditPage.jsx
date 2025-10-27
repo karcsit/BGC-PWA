@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { fetchPlayerFinderPost, updatePlayerFinderPost } from '../services/playerFinderService'
-import { getCsrfToken } from '../services/authService'
 import './PlayerFinderFormPage.css'
 
 function PlayerFinderEditPage() {
@@ -20,7 +19,7 @@ function PlayerFinderEditPage() {
     title: '',
     field_event_date: '',
     field_location: 'cafe',
-    field_event_type: 'egyeni',
+    field_event_type: '',
     field_needed_players: 4,
     field_current_players: 1,
     field_contact: '',
@@ -102,7 +101,7 @@ function PlayerFinderEditPage() {
         title: post.attributes.title || '',
         field_event_date: eventDate,
         field_location: post.attributes.field_location || 'cafe',
-        field_event_type: post.attributes.field_event_type || 'egyeni',
+        field_event_type: post.attributes.field_event_type || '',
         field_needed_players: post.attributes.field_needed_players || 4,
         field_current_players: post.attributes.field_current_players || 1,
         field_contact: post.attributes.field_contact || '',
@@ -243,8 +242,6 @@ function PlayerFinderEditPage() {
       setLoading(true)
       setError(null)
 
-      const csrfToken = await getCsrfToken()
-
       // Format date to RFC 3339
       const eventDate = new Date(formData.field_event_date)
       const year = eventDate.getFullYear()
@@ -266,7 +263,6 @@ function PlayerFinderEditPage() {
           title: finalTitle,
           field_event_date: formattedDate,
           field_location: formData.field_location,
-          field_event_type: formData.field_event_type,
           field_needed_players: parseInt(formData.field_needed_players),
           field_current_players: parseInt(formData.field_current_players),
           field_contact: formData.field_contact,
@@ -275,6 +271,11 @@ function PlayerFinderEditPage() {
           field_experience_level: formData.field_experience_level
         },
         relationships: {}
+      }
+
+      // Only include field_event_type if it has a value
+      if (formData.field_event_type) {
+        postData.attributes.field_event_type = formData.field_event_type
       }
 
       // Add game relationship if selected
@@ -327,7 +328,7 @@ function PlayerFinderEditPage() {
         }
       }
 
-      await updatePlayerFinderPost(id, postData, csrfToken)
+      await updatePlayerFinderPost(id, postData)
 
       navigate(`/player-finder/${id}`)
     } catch (err) {

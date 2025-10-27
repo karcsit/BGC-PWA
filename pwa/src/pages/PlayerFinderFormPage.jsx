@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { createPlayerFinderPost } from '../services/playerFinderService'
 import { fetchGames } from '../services/drupalApi'
-import { getCsrfToken } from '../services/authService'
 import './PlayerFinderFormPage.css'
 
 function PlayerFinderFormPage() {
@@ -19,7 +18,7 @@ function PlayerFinderFormPage() {
     title: '',
     field_event_date: '',
     field_location: 'cafe',
-    field_event_type: 'egyeni',
+    field_event_type: '',
     field_needed_players: 4,
     field_current_players: 1,
     field_contact: '',
@@ -176,8 +175,6 @@ function PlayerFinderFormPage() {
       setLoading(true)
       setError(null)
 
-      const csrfToken = await getCsrfToken()
-
       // Format date to RFC 3339 with explicit timezone offset (Drupal requires +HH:MM format, not Z)
       const eventDate = new Date(formData.field_event_date)
       const year = eventDate.getFullYear()
@@ -200,7 +197,6 @@ function PlayerFinderFormPage() {
           title: finalTitle,
           field_event_date: formattedDate,
           field_location: formData.field_location,
-          field_event_type: formData.field_event_type,
           field_needed_players: parseInt(formData.field_needed_players),
           field_current_players: parseInt(formData.field_current_players),
           field_contact: formData.field_contact,
@@ -209,6 +205,11 @@ function PlayerFinderFormPage() {
           field_experience_level: formData.field_experience_level
         },
         relationships: {}
+      }
+
+      // Only include field_event_type if it has a value
+      if (formData.field_event_type) {
+        postData.attributes.field_event_type = formData.field_event_type
       }
 
       // Add game relationship if selected
@@ -266,7 +267,7 @@ function PlayerFinderFormPage() {
         }
       }
 
-      await createPlayerFinderPost(postData, csrfToken)
+      await createPlayerFinderPost(postData)
 
       navigate('/player-finder')
     } catch (err) {
