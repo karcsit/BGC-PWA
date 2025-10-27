@@ -19,7 +19,7 @@ function PlayerFinderEditPage() {
     title: '',
     field_event_date: '',
     field_location: 'cafe',
-    field_event_type: 'casual',
+    field_event_type: 'once',
     field_needed_players: 4,
     field_current_players: 1,
     field_contact: '',
@@ -101,7 +101,7 @@ function PlayerFinderEditPage() {
         title: post.attributes.title || '',
         field_event_date: eventDate,
         field_location: post.attributes.field_location || 'cafe',
-        field_event_type: post.attributes.field_event_type || 'casual',
+        field_event_type: post.attributes.field_event_type || 'once',
         field_needed_players: post.attributes.field_needed_players || 4,
         field_current_players: post.attributes.field_current_players || 1,
         field_contact: post.attributes.field_contact || '',
@@ -263,7 +263,7 @@ function PlayerFinderEditPage() {
           title: finalTitle,
           field_event_date: formattedDate,
           field_location: formData.field_location,
-          field_event_type: formData.field_event_type || 'casual', // Required field
+          field_event_type: formData.field_event_type || 'once', // Required: 'once' or 'recurring'
           field_needed_players: parseInt(formData.field_needed_players),
           field_current_players: parseInt(formData.field_current_players),
           field_contact: formData.field_contact,

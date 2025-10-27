@@ -18,7 +18,7 @@ function PlayerFinderFormPage() {
     title: '',
     field_event_date: '',
     field_location: 'cafe',
-    field_event_type: 'casual',
+    field_event_type: 'once',
     field_needed_players: 4,
     field_current_players: 1,
     field_contact: '',
@@ -197,18 +197,13 @@ function PlayerFinderFormPage() {
           title: finalTitle,
           field_event_date: formattedDate,
           field_location: formData.field_location,
+          field_event_type: formData.field_event_type || 'once', // Required: 'once' or 'recurring'
           field_needed_players: parseInt(formData.field_needed_players),
           field_current_players: parseInt(formData.field_current_players),
           field_status: formData.field_status
         },
         relationships: {}
       }
-
-      // field_event_type - temporarily commented out until we know the valid values
-      // TODO: Check Drupal admin for allowed values in field_event_type
-      // if (formData.field_event_type) {
-      //   postData.attributes.field_event_type = formData.field_event_type
-      // }
       if (formData.field_contact) {
         postData.attributes.field_contact = formData.field_contact
       }
@@ -322,7 +317,7 @@ function PlayerFinderFormPage() {
 
           <div className="form-group">
             <label htmlFor="field_event_type">
-              Esemény jellege <span className="required">*</span>
+              Esemény típusa <span className="required">*</span>
             </label>
             <select
               id="field_event_type"
@@ -331,10 +326,8 @@ function PlayerFinderFormPage() {
               onChange={handleChange}
               required
             >
-              <option value="casual">Kötetlen játék</option>
-              <option value="tournament">Verseny / Bajnokság</option>
-              <option value="learning">Tanulás / Oktatás</option>
-              <option value="playtest">Játékteszt</option>
+              <option value="once">Egyszeri esemény</option>
+              <option value="recurring">Ismétlődő esemény</option>
             </select>
           </div>
 
