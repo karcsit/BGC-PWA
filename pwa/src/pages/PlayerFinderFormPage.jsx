@@ -18,7 +18,7 @@ function PlayerFinderFormPage() {
     title: '',
     field_event_date: '',
     field_location: 'cafe',
-    field_event_type: '',
+    field_event_type: 'casual',
     field_needed_players: 4,
     field_current_players: 1,
     field_contact: '',
@@ -197,16 +197,12 @@ function PlayerFinderFormPage() {
           title: finalTitle,
           field_event_date: formattedDate,
           field_location: formData.field_location,
+          field_event_type: formData.field_event_type || 'casual', // Required field, default to 'casual'
           field_needed_players: parseInt(formData.field_needed_players),
           field_current_players: parseInt(formData.field_current_players),
           field_status: formData.field_status
         },
         relationships: {}
-      }
-
-      // Only include optional fields if they have values
-      if (formData.field_event_type) {
-        postData.attributes.field_event_type = formData.field_event_type
       }
       if (formData.field_contact) {
         postData.attributes.field_contact = formData.field_contact
@@ -317,6 +313,24 @@ function PlayerFinderFormPage() {
               required
             />
             <small className="field-note">Helyszín: Board Game Cafe</small>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="field_event_type">
+              Esemény jellege <span className="required">*</span>
+            </label>
+            <select
+              id="field_event_type"
+              name="field_event_type"
+              value={formData.field_event_type}
+              onChange={handleChange}
+              required
+            >
+              <option value="casual">Kötetlen játék</option>
+              <option value="tournament">Verseny / Bajnokság</option>
+              <option value="learning">Tanulás / Oktatás</option>
+              <option value="playtest">Játékteszt</option>
+            </select>
           </div>
 
           <div className="form-row">
