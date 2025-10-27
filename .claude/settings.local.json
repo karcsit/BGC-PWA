@@ -28,7 +28,8 @@
       "Bash(powershell \"Compress-Archive -Path ''pwa/dist/*'' -DestinationPath ''jatsszokosan-pwa-deploy.zip'' -Force\")",
       "Bash(unzip:*)",
       "Bash(powershell \"Compress-Archive -Path ''pwa/dist/*'' -DestinationPath ''jatsszokosan-pwa-LATEST.zip'' -Force\")",
-      "Bash(powershell \"Compress-Archive -Path ''pwa/dist/*'' -DestinationPath ''jatsszokosan-pwa-with-htaccess.zip'' -Force\")"
+      "Bash(powershell \"Compress-Archive -Path ''pwa/dist/*'' -DestinationPath ''jatsszokosan-pwa-with-htaccess.zip'' -Force\")",
+      "Bash(git reset:*)"
     ],
     "deny": [],
     "ask": []

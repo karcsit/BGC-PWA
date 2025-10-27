@@ -197,13 +197,18 @@ function PlayerFinderFormPage() {
           title: finalTitle,
           field_event_date: formattedDate,
           field_location: formData.field_location,
-          field_event_type: formData.field_event_type || 'casual', // Required field, default to 'casual'
           field_needed_players: parseInt(formData.field_needed_players),
           field_current_players: parseInt(formData.field_current_players),
           field_status: formData.field_status
         },
         relationships: {}
       }
+
+      // field_event_type - temporarily commented out until we know the valid values
+      // TODO: Check Drupal admin for allowed values in field_event_type
+      // if (formData.field_event_type) {
+      //   postData.attributes.field_event_type = formData.field_event_type
+      // }
       if (formData.field_contact) {
         postData.attributes.field_contact = formData.field_contact
       }

@@ -1,0 +1,10 @@
+langcode: hu
+status: true
+dependencies: {  }
+name: Esemény
+type: esemeny
+description: 'Események és programok a Board Game Cafe-ban'
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: true

@@ -1,0 +1,25 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the BGC Events module.
+ */
+
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
+
+/**
+ * Implements hook_install().
+ */
+function bgc_events_install() {
+  // The fields will be created via configuration management or manually in the UI.
+  // This is just a placeholder for any install-time setup needed.
+  \Drupal::messenger()->addStatus(t('BGC Events module installed successfully. Please create the "esemeny" content type with the required fields.'));
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function bgc_events_uninstall() {
+  \Drupal::messenger()->addStatus(t('BGC Events module uninstalled.'));
+}

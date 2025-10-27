@@ -1,0 +1,12 @@
+name: 'BGC Events'
+type: module
+description: 'Board Game Cafe event registration system with waitlist functionality'
+core_version_requirement: ^10 || ^11
+package: 'Board Game Cafe'
+dependencies:
+  - drupal:node
+  - drupal:user
+  - drupal:datetime
+  - drupal:options
+  - drupal:image
+  - drupal:file
