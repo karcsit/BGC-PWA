@@ -76,6 +76,23 @@ export async function createPlayerFinderPost(postData, csrfToken = null) {
     console.log('📤 Creating player finder post with payload:', JSON.stringify(payload, null, 2))
     console.log('🔐 Using CSRF token:', csrfToken ? csrfToken.substring(0, 20) + '...' : 'MISSING')
 
+    // TEST: Try minimal payload first (uncomment to test)
+    // const minimalPayload = {
+    //   data: {
+    //     type: 'node--player_finder',
+    //     attributes: {
+    //       title: payload.data.attributes.title,
+    //       field_event_date: payload.data.attributes.field_event_date,
+    //       field_location: payload.data.attributes.field_location,
+    //       field_event_type: payload.data.attributes.field_event_type,
+    //       field_needed_players: payload.data.attributes.field_needed_players,
+    //       field_current_players: payload.data.attributes.field_current_players,
+    //       field_status: payload.data.attributes.field_status
+    //     }
+    //   }
+    // }
+    // console.log('🧪 TEST: Using minimal payload without relationships')
+
     const response = await fetch(url, {
       method: 'POST',
       credentials: 'include',

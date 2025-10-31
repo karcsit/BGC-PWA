@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import { registerForEvent, unregisterFromEvent, getEventStatus } from '../services/eventService'
+import { registerForEvent, unregisterFromEvent, getEventStatus, deleteEvent, getEventParticipants } from '../services/eventService'
+import { canManageEvents } from '../utils/permissions'
 
 function EventCard({ event, included }) {
   const { user } = useAuth()
+  const navigate = useNavigate()
   const [status, setStatus] = useState(null)
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
+  const [showParticipants, setShowParticipants] = useState(false)
+  const [participants, setParticipants] = useState(null)
 
   const eventId = event.id // Use UUID directly
 
@@ -55,7 +60,9 @@ function EventCard({ event, included }) {
     // Try to find as file--file (Image field)
     const fileEntity = included?.find(item => item.id === imageId && item.type === 'file--file')
     if (fileEntity?.attributes?.uri?.url) {
-      return `https://jatsszokosan.hu${fileEntity.attributes.uri.url}`
+      // Use relative path for Vite proxy in development, full URL in production
+      const imageUrl = fileEntity.attributes.uri.url
+      return import.meta.env.DEV ? imageUrl : `https://jatsszokosan.hu${imageUrl}`
     }
 
     // Fallback: try to find as media entity (Media field)
@@ -66,7 +73,9 @@ function EventCard({ event, included }) {
       if (fileId) {
         const fileEntity = included?.find(item => item.id === fileId && item.type === 'file--file')
         if (fileEntity?.attributes?.uri?.url) {
-          return `https://jatsszokosan.hu${fileEntity.attributes.uri.url}`
+          // Use relative path for Vite proxy in development, full URL in production
+          const imageUrl = fileEntity.attributes.uri.url
+          return import.meta.env.DEV ? imageUrl : `https://jatsszokosan.hu${imageUrl}`
         }
       }
     }
@@ -128,17 +137,54 @@ function EventCard({ event, included }) {
     }
   }
 
+  const handleDelete = async () => {
+    if (!confirm(`Biztosan törölni szeretnéd ezt az eseményt?\n\n"${title}"`)) return
+
+    try {
+      setLoading(true)
+      await deleteEvent(eventId)
+      alert('Esemény törölve!')
+      window.location.reload()
+    } catch (error) {
+      alert('Hiba történt a törlés során: ' + error.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const loadParticipants = async () => {
+    if (participants) {
+      setShowParticipants(!showParticipants)
+      return
+    }
+
+    try {
+      setLoading(true)
+      const data = await getEventParticipants(eventId)
+      setParticipants(data)
+      setShowParticipants(true)
+    } catch (error) {
+      alert('Nem sikerült betölteni a résztvevőket: ' + error.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   // Determine if event is in the past
   const isPastEvent = eventDate && new Date(eventDate) < new Date()
 
   // Debug logging
-  console.log('EventCard Debug:', {
+  console.log('🔍 EventCard Debug:', {
     title,
+    eventDate,
+    eventDateParsed: eventDate ? new Date(eventDate).toISOString() : 'N/A',
+    now: new Date().toISOString(),
     isPastEvent,
-    user: !!user,
+    hasUser: !!user,
     userName: user?.name,
+    userObject: user,
     status,
-    showButton: !isPastEvent && user
+    shouldShowButton: !isPastEvent && !!user
   })
 
   return (
@@ -222,15 +268,111 @@ function EventCard({ event, included }) {
           </div>
         )}
 
+        {/* Editor Management Buttons */}
+        {canManageEvents(user) && (
+          <div className="mb-4 pb-4 border-b border-gray-200">
+            <div className="flex gap-2 mb-3">
+              <button
+                onClick={() => navigate(`/events/${eventId}/edit`)}
+                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors text-sm"
+              >
+                ✏️ Szerkesztés
+              </button>
+              <button
+                onClick={handleDelete}
+                disabled={loading}
+                className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors text-sm disabled:opacity-50"
+              >
+                🗑️ Törlés
+              </button>
+            </div>
+            <button
+              onClick={loadParticipants}
+              disabled={loading}
+              className="w-full px-4 py-2 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700 transition-colors text-sm disabled:opacity-50"
+            >
+              👥 {showParticipants ? 'Résztvevők elrejtése' : 'Résztvevők megtekintése'}
+            </button>
+
+            {/* Participants List */}
+            {showParticipants && participants && (
+              <div className="mt-3 p-4 bg-gray-50 rounded-lg">
+                <h4 className="font-bold text-gray-800 mb-3">Jelentkezők:</h4>
+
+                {/* Registered */}
+                {participants.participants?.length > 0 && (
+                  <div className="mb-3">
+                    <p className="text-sm text-gray-600 mb-2 font-semibold">Elfogadott ({participants.participants.length}):</p>
+                    <ul className="space-y-1">
+                      {participants.participants.map((p, i) => (
+                        <li key={i} className="text-sm text-gray-700">✓ {p}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Waitlist */}
+                {participants.waitlist?.length > 0 && (
+                  <div>
+                    <p className="text-sm text-gray-600 mb-2 font-semibold">Várólistán ({participants.waitlist.length}):</p>
+                    <ul className="space-y-1">
+                      {participants.waitlist.map((p, i) => (
+                        <li key={i} className="text-sm text-orange-600">⏳ {p}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {participants.participants?.length === 0 && participants.waitlist?.length === 0 && (
+                  <p className="text-sm text-gray-500 italic">Még nincs jelentkező</p>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Action Buttons */}
-        {!isPastEvent && user && (
+        {!isPastEvent && user && !status?.is_registered && !status?.is_waitlisted && (
           <button
             onClick={handleRegister}
             disabled={loading}
-            className="w-full px-6 py-3 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-lg hover:shadow-lg transition-all duration-300 disabled:opacity-50 text-lg"
+            className="px-4 py-2 bg-gray-600 text-white rounded-lg font-medium transition-colors hover:bg-gray-700 disabled:opacity-50"
           >
-            {loading ? 'Jelentkezés...' : '✓ Jelentkezem'}
+            {loading ? 'Jelentkezés...' : 'Jelentkezem'}
           </button>
+        )}
+
+        {/* Already Registered - Show Unregister Button */}
+        {!isPastEvent && user && status?.is_registered && (
+          <div className="space-y-2">
+            <div className="p-3 bg-green-100 text-green-800 rounded-lg text-sm text-center font-medium">
+              ✓ Regisztráltál erre az eseményre
+            </div>
+            <button
+              onClick={handleUnregister}
+              disabled={loading}
+              className="w-full px-4 py-2 bg-red-600 text-white rounded-lg font-medium transition-colors hover:bg-red-700 disabled:opacity-50"
+            >
+              {loading ? 'Törlés...' : 'Jelentkezés törlése'}
+            </button>
+          </div>
+        )}
+
+        {/* On Waitlist */}
+        {!isPastEvent && user && status?.is_waitlisted && (
+          <div className="space-y-2">
+            <div className="p-3 bg-yellow-100 text-yellow-800 rounded-lg text-sm text-center">
+              <p className="font-medium">📋 Várólistán vagy</p>
+              <p className="text-xs mt-1">Pozíció: {status.waitlist_position}</p>
+            </div>
+            <button
+              onClick={handleUnregister}
+              disabled={loading}
+              className="w-full px-4 py-2 bg-red-600 text-white rounded-lg font-medium transition-colors hover:bg-red-700 disabled:opacity-50"
+            >
+              {loading ? 'Törlés...' : 'Várólistáról törlés'}
+            </button>
+          </div>
         )}
 
         {!user && !isPastEvent && (

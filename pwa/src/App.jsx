@@ -10,6 +10,7 @@ import RegisterPage from './pages/RegisterPage'
 import ProfilePage from './pages/ProfilePage'
 import GameLogPage from './pages/GameLogPage'
 import GameLogFormPage from './pages/GameLogFormPage'
+import EventFormPage from './pages/EventFormPage'
 import PlayerFinderPage from './pages/PlayerFinderPage'
 import PlayerFinderFormPage from './pages/PlayerFinderFormPage'
 import PlayerFinderEditPage from './pages/PlayerFinderEditPage'
@@ -106,6 +107,22 @@ function AppContent() {
             />
             <Route path="/booking" element={<div className="text-center py-12"><h2 className="text-2xl font-bold text-gray-800">Asztalfoglalás - Hamarosan</h2></div>} />
             <Route path="/events" element={<EventsPage />} />
+            <Route
+              path="/events/new"
+              element={
+                <ProtectedRoute>
+                  <EventFormPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/events/:eventId/edit"
+              element={
+                <ProtectedRoute>
+                  <EventFormPage />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/player-finder" element={<PlayerFinderPage />} />
             <Route
               path="/player-finder/new"

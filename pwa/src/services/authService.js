@@ -35,14 +35,45 @@ export const authService = {
 
       const data = await response.json()
 
+      // Fetch the full user entity from JSON:API to get UUID
+      // Use filter by drupal_internal__uid instead of direct ID lookup
+      const userEntityResponse = await fetch(`${API_BASE}/jsonapi/user/user?filter[drupal_internal__uid]=${data.current_user.uid}`, {
+        headers: {
+          'Accept': 'application/vnd.api+json',
+        },
+        credentials: 'include'
+      })
+
+      let userUuid = null
+      if (userEntityResponse.ok) {
+        const userEntityData = await userEntityResponse.json()
+        // The response is an array, get the first item
+        userUuid = userEntityData.data?.[0]?.id
+        console.log('✅ Fetched user UUID:', userUuid)
+      } else {
+        console.error('❌ Failed to fetch user UUID:', await userEntityResponse.text())
+      }
+
+      if (!userUuid) {
+        console.error('⚠️ Could not get UUID, this will cause filtering issues!')
+      }
+
+      // Enhance user object with UUID
+      const enhancedUser = {
+        ...data.current_user,
+        id: userUuid || data.current_user.uid // Use UUID if available, fallback to uid
+      }
+
       // Store auth data in localStorage
       localStorage.setItem('csrf_token', data.csrf_token)
       localStorage.setItem('logout_token', data.logout_token)
-      localStorage.setItem('user', JSON.stringify(data.current_user))
+      localStorage.setItem('user', JSON.stringify(enhancedUser))
 
-      console.log('✅ Sikeres bejelentkezés:', data.current_user)
+      console.log('✅ Sikeres bejelentkezés:', enhancedUser)
+      console.log('👤 User ID (UUID):', enhancedUser.id)
+      console.log('👤 User UID (numeric):', enhancedUser.uid)
 
-      return data.current_user
+      return enhancedUser
     } catch (error) {
       console.error('❌ Login error:', error)
       throw error

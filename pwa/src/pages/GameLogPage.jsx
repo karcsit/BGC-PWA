@@ -16,8 +16,23 @@ const GameLogPage = () => {
     // Compare user UUID with log creator UUID
     const currentUserUuid = user?.id // UUID from AuthContext
     const logCreatorUuid = log.createdBy
-    return currentUserUuid && logCreatorUuid && currentUserUuid === logCreatorUuid
+    const matches = currentUserUuid && logCreatorUuid && currentUserUuid === logCreatorUuid
+
+    // Debug logging
+    console.log('🔍 UUID Comparison:', {
+      currentUserUuid,
+      logCreatorUuid,
+      matches,
+      gameTitle: log.game?.title,
+      userObject: user
+    })
+
+    return matches
   })
+
+  // Log the filtering result
+  console.log(`📊 Filtered ${ownLogs.length} own logs from ${gameLogs.length} total logs`)
+  console.log('👤 Current user:', user)
 
   const displayedLogs = activeTab === 'own' ? ownLogs : gameLogs
   const stats = getGameLogStats(ownLogs) // Stats should only count own logs

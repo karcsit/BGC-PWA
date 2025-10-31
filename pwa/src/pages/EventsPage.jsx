@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { fetchEvents } from '../services/eventService'
 import EventCard from '../components/EventCard'
 import EventListItem from '../components/EventListItem'
 import EventCalendar from '../components/EventCalendar'
 import { useAuth } from '../context/AuthContext'
+import { canManageEvents } from '../utils/permissions'
 
 function EventsPage() {
   const { user } = useAuth()
@@ -89,14 +91,14 @@ function EventsPage() {
             Csatlakozz programjainkhoz és versenyeinkhez!
           </p>
         </div>
-        {user && (
-          <a
-            href="/node/add/esemeny"
-            className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium flex items-center gap-2"
+        {canManageEvents(user) && (
+          <Link
+            to="/events/new"
+            className="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg hover:shadow-xl transition-all font-semibold flex items-center gap-2"
           >
-            <span className="text-xl">+</span>
-            Új esemény
-          </a>
+            <span className="text-xl">➕</span>
+            Új esemény létrehozása
+          </Link>
         )}
       </div>
 

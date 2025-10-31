@@ -19,7 +19,7 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/jsonapi': {
-        target: 'https://jatsszokosan.hu',
+        target: 'https://dr11.ddev.site',
         changeOrigin: true,
         secure: false,
         cookieDomainRewrite: 'localhost',
@@ -27,7 +27,7 @@ export default defineConfig({
         rewrite: (path) => path
       },
       '/api': {
-        target: 'https://jatsszokosan.hu',
+        target: 'https://dr11.ddev.site',
         changeOrigin: true,
         secure: false,
         cookieDomainRewrite: 'localhost',
@@ -35,11 +35,17 @@ export default defineConfig({
         rewrite: (path) => path
       },
       '/user': {
-        target: 'https://jatsszokosan.hu',
+        target: 'https://dr11.ddev.site',
         changeOrigin: true,
         secure: false,
         cookieDomainRewrite: 'localhost',
         cookiePathRewrite: '/',
+        rewrite: (path) => path
+      },
+      '/sites': {
+        target: 'https://dr11.ddev.site',
+        changeOrigin: true,
+        secure: false,
         rewrite: (path) => path
       }
     }
