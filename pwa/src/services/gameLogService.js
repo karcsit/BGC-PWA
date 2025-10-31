@@ -193,6 +193,10 @@ export const gameLogService = {
         console.warn('Failed to parse scores:', e)
       }
 
+      // Find author info
+      const authorRelationship = item.relationships?.uid?.data
+      const author = authorRelationship ? included.find(inc => inc.id === authorRelationship.id && inc.type === 'user--user') : null
+
       return {
         id: item.id,
         game: {
@@ -210,6 +214,7 @@ export const gameLogService = {
         rating: item.attributes.field_rating,
         notes: item.attributes.field_notes,
         createdBy: item.relationships?.uid?.data?.id,
+        createdByName: author?.attributes?.display_name || author?.attributes?.name || null,
         createdAt: item.attributes.created
       }
     })

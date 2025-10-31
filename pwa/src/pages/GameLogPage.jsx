@@ -11,7 +11,16 @@ const GameLogPage = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  const stats = getGameLogStats(gameLogs)
+  // Filter logs based on current user
+  const ownLogs = gameLogs.filter(log => {
+    // Compare user UUID with log creator UUID
+    const currentUserUuid = user?.id // UUID from AuthContext
+    const logCreatorUuid = log.createdBy
+    return currentUserUuid && logCreatorUuid && currentUserUuid === logCreatorUuid
+  })
+
+  const displayedLogs = activeTab === 'own' ? ownLogs : gameLogs
+  const stats = getGameLogStats(ownLogs) // Stats should only count own logs
 
   // Fetch game logs when component mounts or tab changes
   useEffect(() => {
@@ -96,7 +105,7 @@ const GameLogPage = () => {
               : 'text-gray-700 hover:bg-gray-100'
           }`}
         >
-          👤 Saját ({gameLogs.length})
+          👤 Saját ({ownLogs.length})
         </button>
         <button
           onClick={() => setActiveTab('stats')}
@@ -188,7 +197,11 @@ const GameLogPage = () => {
       {/* Game Logs List */}
       {!loading && !error && (activeTab === 'all' || activeTab === 'own') && (
         <div className="space-y-4 animate-fade-in">
-          {gameLogs.map((log, index) => (
+          {displayedLogs.map((log, index) => {
+            // Check if this log belongs to current user
+            const isOwnLog = user?.id && log.createdBy && user.id === log.createdBy
+
+            return (
             <div
               key={log.id}
               className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all p-6 border border-gray-100"
@@ -265,6 +278,14 @@ const GameLogPage = () => {
                     <span>{locationLabels[log.location]}</span>
                   </div>
 
+                  {/* Author - only show on "all" tab if not own log */}
+                  {activeTab === 'all' && !isOwnLog && (
+                    <div className="flex items-center gap-2 text-sm text-gray-500 mb-3 italic">
+                      <span>✍️</span>
+                      <span>Felvette: {log.createdByName || 'Ismeretlen felhasználó'}</span>
+                    </div>
+                  )}
+
                   {/* Notes */}
                   {log.notes && (
                     <div className="bg-gray-50 rounded-lg p-3 text-sm text-gray-700 italic">
@@ -274,16 +295,17 @@ const GameLogPage = () => {
                 </div>
               </div>
             </div>
-          ))}
+            )
+          })}
 
-          {gameLogs.length === 0 && (
+          {displayedLogs.length === 0 && (
             <div className="text-center py-16 bg-gray-50 rounded-xl">
               <span className="text-6xl block mb-4">🎲</span>
               <h3 className="text-xl font-bold text-gray-800 mb-2">
-                Még nincsenek bejegyzések
+                {activeTab === 'own' ? 'Még nincsenek saját bejegyzéseid' : 'Még nincsenek bejegyzések'}
               </h3>
               <p className="text-gray-600">
-                Kezdd el rögzíteni a játékélményeidet!
+                {activeTab === 'own' ? 'Kezdd el rögzíteni a játékélményeidet!' : 'Legyél az első, aki felvesz egy játékot!'}
               </p>
             </div>
           )}
